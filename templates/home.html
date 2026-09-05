@@ -1,47 +1,19 @@
- <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Machine Learning Concepts</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+{% extends "base.html" %}
+
+{% block title %}
+Home | Data with Roots
+{% endblock %}
+
+{% block extra_css %}
+
 <style>
-  :root{
-    --bg:#14181C;
-    --bg-2:#1D2227;
-    --card:#20262C;
-    --ink:#EDEAE0;
-    --muted:#A5ACB3;
-    --ochre:#D99B3C;
-    --teal:#4FA393;
-    --line:#333B42;
-  }
-  body{
-    font-family:'Public Sans', sans-serif;
-    background:var(--bg);
-    color:var(--ink);
-  }
-  h1, h2, h3, .navbar-brand{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-  }
-  .navbar{
-    background:var(--bg-2) !important;
-    border-bottom:2px solid var(--line);
-  }
-  .navbar-brand, .nav-link{
-    color:var(--ink) !important;
-  }
-  .nav-link:hover{
-    color:var(--ochre) !important;
-  }
   .badge-eyebrow{
     letter-spacing:.08em;
     font-size:.72rem;
     text-transform:uppercase;
     color:var(--teal);
   }
+
   .btn-ink{
     background:var(--ochre);
     color:#14181C;
@@ -49,40 +21,54 @@
     font-weight:600;
     border:none;
   }
+
   .btn-ink:hover{
     background:var(--teal);
     color:#14181C;
   }
+
   section{
     padding:3.5rem 0;
   }
+
   .section-title{
     border-bottom:2px solid var(--line);
     padding-bottom:.5rem;
     margin-bottom:2rem;
   }
+
   .bg-alt{
     background:var(--bg-2);
   }
-  .card-type, .card-custom{
+
+  .card-type,
+  .card-custom{
     border:1px solid var(--line);
     border-radius:4px;
     background:var(--card);
     height:100%;
     transition:transform .15s ease, box-shadow .15s ease;
   }
-  .card-type:hover, .card-custom:hover{
+
+  .card-type:hover,
+  .card-custom:hover{
     transform:translateY(-4px);
     box-shadow:0 8px 20px rgba(0,0,0,.35);
     border-color:var(--ochre);
   }
-  .card-type .icon-wrap, .card-custom .icon-wrap{
-    width:46px;height:46px;
+
+  .card-type .icon-wrap,
+  .card-custom .icon-wrap{
+    width:46px;
+    height:46px;
     border-radius:50%;
     background:var(--bg-2);
-    display:flex;align-items:center;justify-content:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     margin-bottom:.9rem;
   }
+
   .kicker{
     font-size:.72rem;
     text-transform:uppercase;
@@ -90,9 +76,14 @@
     color:var(--ochre);
     font-weight:600;
   }
-  .card-type p, .card-type ul, .card-custom p, .card-custom ul{
+
+  .card-type p,
+  .card-type ul,
+  .card-custom p,
+  .card-custom ul{
     color:var(--muted);
   }
+
   .note-box{
     background:var(--card);
     border-left:4px solid var(--ochre);
@@ -100,29 +91,36 @@
     padding:1.2rem 1.4rem;
     color:var(--muted);
   }
+
   .text-muted-custom{
     color:var(--muted) !important;
   }
+
   .accordion-item{
     background:var(--card);
     border:1px solid var(--line);
   }
+
   .accordion-button{
     background:var(--card);
     color:var(--ink);
     font-weight:600;
   }
+
   .accordion-button:not(.collapsed){
     background:var(--bg-2);
     color:var(--ochre);
     box-shadow:none;
   }
+
   .accordion-button::after{
-    filter: invert(72%) sepia(45%) saturate(500%) hue-rotate(1deg);
+    filter:invert(72%) sepia(45%) saturate(500%) hue-rotate(1deg);
   }
+
   .accordion-body{
     color:var(--muted);
   }
+
   .flow-step{
     background:var(--card);
     border:1px solid var(--line);
@@ -130,6 +128,7 @@
     padding:1.2rem;
     text-align:center;
   }
+
   .flow-arrow{
     color:var(--ochre);
     font-size:1.6rem;
@@ -137,256 +136,817 @@
     align-items:center;
     justify-content:center;
   }
-  footer{
-    border-top:2px solid var(--line);
-    padding:1.5rem 0;
-    font-size:.85rem;
-    color:var(--muted);
-    background:var(--bg-2);
+
+  .type-card h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    color:var(--ink);
+  }
+
+  .type-card .sub-heading{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--teal);
+    font-weight:600;
+    margin-top:1rem;
+    margin-bottom:.4rem;
+  }
+
+  .type-card ul{
+    padding-left:1.1rem;
+    margin-bottom:0;
+  }
+
+  .type-card li{
+    font-size:.88rem;
   }
 </style>
-</head>
-<body>
 
-<nav class="navbar navbar-expand-lg sticky-top">
-  <div class="container">
-    <a class="navbar-brand" href="#">Data with Roots</a>
-  </div>
-</nav>
+{% endblock %}
 
-<main>
+{% block content %}
 
-<!-- 1. What is Machine Learning? -->
 <section class="pt-5">
   <div class="container">
-    <span class="badge-eyebrow">Machine Learning</span>
+
+    <span class="badge-eyebrow">
+      Machine Learning
+    </span>
+
     <div class="row mt-4">
+
       <div class="col-lg-8">
-        <h2 class="section-title h4">What is Machine Learning?</h2>
+
+        <h2 class="section-title h4">
+          What is Machine Learning?
+        </h2>
+
         <p class="text-muted-custom">
-          <strong style="color:var(--ink);">Machine Learning</strong> is a branch of artificial
-          intelligence that allows a system to improve its performance on a task through experience,
+          <strong style="color:var(--ink);">
+            Machine Learning
+          </strong>
+          is a branch of artificial intelligence that allows a system
+          to improve its performance on a task through experience,
           instead of following rules written manually by a person.
         </p>
+
         <p class="text-muted-custom">
-          Rather than programming fixed instructions for every situation, the system is shown
-          <strong style="color:var(--ink);">example data</strong>, and it adjusts its internal
-          parameters until it recognizes patterns that let it predict or decide on new data
-          it has never seen before.
+          Rather than programming fixed instructions for every situation,
+          the system is shown
+          <strong style="color:var(--ink);">
+            example data
+          </strong>,
+          and it adjusts its internal parameters until it recognizes
+          patterns that let it predict or decide on new data it has
+          never seen before.
         </p>
+
       </div>
+
     </div>
+
   </div>
 </section>
 
-<!-- 2. Main purpose -->
+
 <section class="bg-alt">
+
   <div class="container">
-    <h2 class="section-title h4">What is the main purpose of Machine Learning?</h2>
+
+    <h2 class="section-title h4">
+      What is the main purpose of Machine Learning?
+    </h2>
+
     <div class="row g-4">
+
       <div class="col-md-4">
+
         <div class="card-custom p-4">
+
           <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <path d="M12 2v20M2 12h20"/>
+
+            </svg>
+
           </div>
-          <h3 class="h6" style="color:var(--ink);">Automating decisions</h3>
-          <p class="small mb-0">Solving repetitive or complex tasks without needing to manually program every rule.</p>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Automating decisions
+          </h3>
+
+          <p class="small mb-0">
+            Solving repetitive or complex tasks without needing
+            to manually program every rule.
+          </p>
+
         </div>
+
       </div>
+
+
       <div class="col-md-4">
+
         <div class="card-custom p-4">
+
           <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/></svg>
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <path d="M3 17l6-6 4 4 8-8"/>
+
+            </svg>
+
           </div>
-          <h3 class="h6" style="color:var(--ink);">Finding patterns</h3>
-          <p class="small mb-0">Discovering relationships and trends in data that aren't always obvious at first glance.</p>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Finding patterns
+          </h3>
+
+          <p class="small mb-0">
+            Discovering relationships and trends in data that are not
+            always obvious at first glance.
+          </p>
+
         </div>
+
       </div>
+
+
       <div class="col-md-4">
+
         <div class="card-custom p-4">
+
           <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 3"/>
+
+            </svg>
+
           </div>
-          <h3 class="h6" style="color:var(--ink);">Predicting the future</h3>
-          <p class="small mb-0">Estimating future values or behaviors based on what has been observed in the past.</p>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Predicting the future
+          </h3>
+
+          <p class="small mb-0">
+            Estimating future values or behaviors based on what
+            has been observed in the past.
+          </p>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- 3. Relationship between data, training, models and predictions -->
+
 <section>
+
   <div class="container">
-    <h2 class="section-title h4">Data, training, model and prediction</h2>
-    <p class="text-muted-custom">These four elements are connected in a single flow: each one depends on the previous one.</p>
+
+    <h2 class="section-title h4">
+      Data, training, model and prediction
+    </h2>
+
+    <p class="text-muted-custom">
+      These four elements are connected in a single flow:
+      each one depends on the previous one.
+    </p>
 
     <div class="row align-items-center g-3 mt-2">
+
       <div class="col-md-2 col-6">
+
         <div class="flow-step">
-          <div class="kicker mb-1">Step 1</div>
-          <strong style="color:var(--ink);">Data</strong>
-          <p class="small mb-0 mt-1">Real examples of the problem</p>
+
+          <div class="kicker mb-1">
+            Step 1
+          </div>
+
+          <strong style="color:var(--ink);">
+            Data
+          </strong>
+
+          <p class="small mb-0 mt-1">
+            Real examples of the problem
+          </p>
+
         </div>
+
       </div>
-      <div class="col-md-1 col-12 flow-arrow d-none d-md-flex">→</div>
+
+      <div class="col-md-1 col-12 flow-arrow d-none d-md-flex">
+        →
+      </div>
+
       <div class="col-md-2 col-6">
+
         <div class="flow-step">
-          <div class="kicker mb-1">Step 2</div>
-          <strong style="color:var(--ink);">Training</strong>
-          <p class="small mb-0 mt-1">The algorithm learns from the data</p>
+
+          <div class="kicker mb-1">
+            Step 2
+          </div>
+
+          <strong style="color:var(--ink);">
+            Training
+          </strong>
+
+          <p class="small mb-0 mt-1">
+            The algorithm learns from the data
+          </p>
+
         </div>
+
       </div>
-      <div class="col-md-1 col-12 flow-arrow d-none d-md-flex">→</div>
+
+      <div class="col-md-1 col-12 flow-arrow d-none d-md-flex">
+        →
+      </div>
+
       <div class="col-md-2 col-6">
+
         <div class="flow-step">
-          <div class="kicker mb-1">Step 3</div>
-          <strong style="color:var(--ink);">Model</strong>
-          <p class="small mb-0 mt-1">Mathematical representation, already fitted</p>
+
+          <div class="kicker mb-1">
+            Step 3
+          </div>
+
+          <strong style="color:var(--ink);">
+            Model
+          </strong>
+
+          <p class="small mb-0 mt-1">
+            Mathematical representation, already fitted
+          </p>
+
         </div>
+
       </div>
-      <div class="col-md-1 col-12 flow-arrow d-none d-md-flex">→</div>
+
+      <div class="col-md-1 col-12 flow-arrow d-none d-md-flex">
+        →
+      </div>
+
       <div class="col-md-2 col-6">
+
         <div class="flow-step">
-          <div class="kicker mb-1">Step 4</div>
-          <strong style="color:var(--ink);">Prediction</strong>
-          <p class="small mb-0 mt-1">Result on a new data point</p>
+
+          <div class="kicker mb-1">
+            Step 4
+          </div>
+
+          <strong style="color:var(--ink);">
+            Prediction
+          </strong>
+
+          <p class="small mb-0 mt-1">
+            Result on a new data point
+          </p>
+
         </div>
+
       </div>
+
     </div>
+
 
     <div class="note-box mt-4">
-      <p class="mb-0"><strong style="color:var(--ink);">Data</strong> feeds the
-      <strong style="color:var(--ink);">training</strong> process; during training, the algorithm
-      adjusts its parameters until it becomes a <strong style="color:var(--ink);">model</strong>;
-      and that trained model is what generates <strong style="color:var(--ink);">predictions</strong>
-      when it receives new information it hasn't seen before.</p>
+
+      <p class="mb-0">
+
+        <strong style="color:var(--ink);">
+          Data
+        </strong>
+        feeds the
+
+        <strong style="color:var(--ink);">
+          training
+        </strong>
+        process; during training, the algorithm adjusts its parameters
+        until it becomes a
+
+        <strong style="color:var(--ink);">
+          model
+        </strong>;
+
+        and that trained model is what generates
+
+        <strong style="color:var(--ink);">
+          predictions
+        </strong>
+
+        when it receives new information it has not seen before.
+
+      </p>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- 4. Importance of data -->
+
 <section class="bg-alt">
+
   <div class="container">
-    <h2 class="section-title h4">The importance of data</h2>
+
+    <h2 class="section-title h4">
+      The importance of data
+    </h2>
+
     <div class="accordion" id="accordionData">
 
+
       <div class="accordion-item">
+
         <h3 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#d1">
+
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#d1">
+
             Data is the raw material of the model
+
           </button>
+
         </h3>
-        <div id="d1" class="accordion-collapse collapse show" data-bs-parent="#accordionData">
+
+        <div
+          id="d1"
+          class="accordion-collapse collapse show"
+          data-bs-parent="#accordionData">
+
           <div class="accordion-body">
-            Without data there is no learning: a Machine Learning model doesn't "know" anything on its own,
-            everything it learns comes from the examples it was trained on.
+
+            Without data there is no learning. A Machine Learning
+            model does not know anything on its own; everything it
+            learns comes from the examples it was trained on.
+
           </div>
+
         </div>
+
       </div>
 
+
       <div class="accordion-item">
+
         <h3 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d2">
+
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#d2">
+
             Quality matters more than quantity
+
           </button>
+
         </h3>
-        <div id="d2" class="accordion-collapse collapse" data-bs-parent="#accordionData">
+
+        <div
+          id="d2"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionData">
+
           <div class="accordion-body">
-            Incomplete, mislabeled, or unrepresentative data can make the model learn the wrong
-            patterns, no matter how many records are used.
+
+            Incomplete, mislabeled, or unrepresentative data can make
+            the model learn the wrong patterns, no matter how many
+            records are used.
+
           </div>
+
         </div>
+
       </div>
 
+
       <div class="accordion-item">
+
         <h3 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d3">
+
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#d3">
+
             More data usually improves performance
+
           </button>
+
         </h3>
-        <div id="d3" class="accordion-collapse collapse" data-bs-parent="#accordionData">
+
+        <div
+          id="d3"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionData">
+
           <div class="accordion-body">
-            In general, the more varied examples a model sees during training, the better
-            it generalizes its behavior to new cases.
+
+            In general, the more varied examples a model sees during
+            training, the better it generalizes its behavior to new cases.
+
           </div>
+
         </div>
+
       </div>
 
+
       <div class="accordion-item">
+
         <h3 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#d4">
+
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#d4">
+
             Data reflects real-world biases
+
           </button>
+
         </h3>
-        <div id="d4" class="accordion-collapse collapse" data-bs-parent="#accordionData">
+
+        <div
+          id="d4"
+          class="accordion-collapse collapse"
+          data-bs-parent="#accordionData">
+
           <div class="accordion-body">
-            If historical data contains biases, the model can learn and reproduce them in its
-            predictions, which is why reviewing the source and quality of the data is essential.
+
+            If historical data contains biases, the model can learn
+            and reproduce them in its predictions, which is why reviewing
+            the source and quality of the data is essential.
+
           </div>
+
         </div>
+
       </div>
 
     </div>
+
   </div>
+
 </section>
 
-<!-- 5. Simple examples -->
-<section>
+
+<section id="types">
+
   <div class="container">
-    <h2 class="section-title h4">Simple examples of Machine Learning applications</h2>
+
+    <span class="badge-eyebrow">
+      Classification
+    </span>
+
+    <h2 class="section-title h4 mt-3">
+      Main Types of Machine Learning
+    </h2>
+
     <div class="row g-4">
 
-      <div class="col-md-3 col-sm-6">
-        <div class="card-type p-4">
-          <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><path d="M4 4h16v12H7l-3 3z"/></svg>
+
+      <div class="col-lg-4">
+
+        <div class="card-custom type-card p-4">
+
+          <span class="kicker">
+            Supervised Learning
+          </span>
+
+          <h4 class="mt-1">
+            Supervised Learning
+          </h4>
+
+          <div class="sub-heading">
+            Definition
           </div>
-          <h3 class="h6" style="color:var(--ink);">Spam filter</h3>
-          <p class="small mb-0">Classifies emails as spam or not spam based on their content and sender.</p>
+
+          <p class="small mb-0">
+            The model learns from a dataset in which every example
+            already includes the correct answer, known as a label.
+            It adjusts its parameters by comparing its predictions
+            against those known answers.
+          </p>
+
+          <div class="sub-heading">
+            Key characteristics
+          </div>
+
+          <ul>
+            <li>Requires labeled data</li>
+            <li>Learning is guided by a known correct output</li>
+            <li>Performance can be measured against real answers</li>
+            <li>Usually requires more effort to prepare the data</li>
+          </ul>
+
+          <div class="sub-heading">
+            Problems it can solve
+          </div>
+
+          <ul>
+            <li>Classification, such as spam detection</li>
+            <li>Regression, such as price prediction</li>
+            <li>Risk or fraud scoring</li>
+          </ul>
+
         </div>
+
       </div>
 
-      <div class="col-md-3 col-sm-6">
-        <div class="card-type p-4">
-          <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+
+      <div class="col-lg-4">
+
+        <div class="card-custom type-card p-4">
+
+          <span class="kicker">
+            Unsupervised Learning
+          </span>
+
+          <h4 class="mt-1">
+            Unsupervised Learning
+          </h4>
+
+          <div class="sub-heading">
+            Definition
           </div>
-          <h3 class="h6" style="color:var(--ink);">Recommendations</h3>
-          <p class="small mb-0">Suggests songs, shows, or products based on user behavior.</p>
+
+          <p class="small mb-0">
+            The model works with data that has no labels or known answers.
+            Instead of predicting a specific output, it explores the data
+            to find structures, groups, or relationships.
+          </p>
+
+          <div class="sub-heading">
+            Key characteristics
+          </div>
+
+          <ul>
+            <li>Works with unlabeled data</li>
+            <li>There is no known correct answer</li>
+            <li>Focuses on discovering hidden structure</li>
+            <li>Results often require human interpretation</li>
+          </ul>
+
+          <div class="sub-heading">
+            Problems it can solve
+          </div>
+
+          <ul>
+            <li>Clustering, such as customer segmentation</li>
+            <li>Anomaly detection</li>
+            <li>Pattern discovery and dimensionality reduction</li>
+          </ul>
+
         </div>
+
       </div>
 
-      <div class="col-md-3 col-sm-6">
-        <div class="card-type p-4">
-          <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><path d="M12 4a8 8 0 1 1-5.7 2.3"/><path d="M4 4v6h6"/></svg>
-          </div>
-          <h3 class="h6" style="color:var(--ink);">Voice assistants</h3>
-          <p class="small mb-0">Recognize speech and answer questions or execute commands.</p>
-        </div>
-      </div>
 
-      <div class="col-md-3 col-sm-6">
-        <div class="card-type p-4">
-          <div class="icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <div class="col-lg-4">
+
+        <div class="card-custom type-card p-4">
+
+          <span class="kicker">
+            Reinforcement Learning
+          </span>
+
+          <h4 class="mt-1">
+            Reinforcement Learning
+          </h4>
+
+          <div class="sub-heading">
+            Definition
           </div>
-          <h3 class="h6" style="color:var(--ink);">Price prediction</h3>
-          <p class="small mb-0">Estimates the value of a house or a product based on its features.</p>
+
+          <p class="small mb-0">
+            An agent interacts with an environment, taking actions and
+            receiving rewards or penalties as feedback. Over time,
+            it adjusts its strategy to maximize the total reward.
+          </p>
+
+          <div class="sub-heading">
+            Key characteristics
+          </div>
+
+          <ul>
+            <li>Learns through trial and error</li>
+            <li>Feedback comes as rewards or penalties</li>
+            <li>Actions can affect future states</li>
+            <li>Balances exploration and known actions</li>
+          </ul>
+
+          <div class="sub-heading">
+            Problems it can solve
+          </div>
+
+          <ul>
+            <li>Game-playing agents</li>
+            <li>Robotics and autonomous navigation</li>
+            <li>Route and resource optimization</li>
+          </ul>
+
         </div>
+
       </div>
 
     </div>
+
   </div>
+
 </section>
 
-</main>
 
-<footer class="text-center">
-  <div class="container">Data with Roots — a Machine Learning project</div>
-</footer>
+<section class="bg-alt">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  <div class="container">
+
+    <h2 class="section-title h4">
+      Simple examples of Machine Learning applications
+    </h2>
+
+    <div class="row g-4">
+
+
+      <div class="col-md-3 col-sm-6">
+
+        <div class="card-type p-4">
+
+          <div class="icon-wrap">
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <path d="M4 4h16v12H7l-3 3z"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Spam filter
+          </h3>
+
+          <p class="small mb-0">
+            Classifies emails as spam or not spam based on
+            their content and sender.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="col-md-3 col-sm-6">
+
+        <div class="card-type p-4">
+
+          <div class="icon-wrap">
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <path d="M9 18V5l12-2v13"/>
+              <circle cx="6" cy="18" r="3"/>
+              <circle cx="18" cy="16" r="3"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Recommendations
+          </h3>
+
+          <p class="small mb-0">
+            Suggests songs, shows, or products based on user behavior.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="col-md-3 col-sm-6">
+
+        <div class="card-type p-4">
+
+          <div class="icon-wrap">
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <path d="M12 4a8 8 0 1 1-5.7 2.3"/>
+              <path d="M4 4v6h6"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Voice assistants
+          </h3>
+
+          <p class="small mb-0">
+            Recognize speech and answer questions or execute commands.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="col-md-3 col-sm-6">
+
+        <div class="card-type p-4">
+
+          <div class="icon-wrap">
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#D99B3C"
+              stroke-width="2">
+
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+
+            </svg>
+
+          </div>
+
+          <h3 class="h6" style="color:var(--ink);">
+            Price prediction
+          </h3>
+
+          <p class="small mb-0">
+            Estimates the value of a house or a product based on its features.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
