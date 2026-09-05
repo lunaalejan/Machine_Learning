@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Case 2</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14181C;
+    --bg-2:#1D2227;
+    --card:#20262C;
+    --ink:#EDEAE0;
+    --muted:#A5ACB3;
+    --ochre:#D99B3C;
+    --teal:#4FA393;
+    --line:#333B42;
+  }
+  body{
+    font-family:'Public Sans', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  h1, h2, .navbar-brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+  }
+  .navbar{
+    background:var(--bg-2) !important;
+    border-bottom:2px solid var(--line);
+  }
+  .navbar-brand{
+    color:var(--ink) !important;
+  }
+  .badge-eyebrow{
+    letter-spacing:.08em;
+    font-size:.72rem;
+    text-transform:uppercase;
+    color:var(--teal);
+  }
+  section{
+    padding:2.5rem 0;
+  }
+  .section-title{
+    border-bottom:2px solid var(--line);
+    padding-bottom:.5rem;
+    margin-bottom:1rem;
+  }
+  .bg-alt{
+    background:var(--bg-2);
+  }
+  .text-muted-custom{
+    color:var(--muted) !important;
+  }
+  .note-box{
+    background:var(--card);
+    border-left:4px solid var(--ochre);
+    border-radius:2px;
+    padding:1.2rem 1.4rem;
+    color:var(--muted);
+  }
+  footer{
+    border-top:2px solid var(--line);
+    padding:1.5rem 0;
+    font-size:.85rem;
+    color:var(--muted);
+    background:var(--bg-2);
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Data with Roots</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- Nombre del caso de uso -->
+<section class="pt-5 pb-3">
+  <div class="container">
+    <span class="badge-eyebrow">Use Case 2</span>
+    <h1 class="mt-2">Grouping Retail Customers by Purchase Behavior</h1>
+  </div>
+</section>
+
+<!-- Contexto del problema -->
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h5">Problem context</h2>
+    <p class="text-muted-custom mb-0">
+      A retail chain currently sends the same generic promotions to every customer, regardless of
+      what or how often they buy. This one-size-fits-all approach means loyal customers get offers
+      they don't need, while occasional shoppers never receive incentives that could bring them back
+      more often. The company has years of transaction history, but has never used it to understand
+      whether there are natural groups of customers with similar shopping habits.
+    </p>
+  </div>
+</section>
+
+<!-- Datos que podrían utilizarse -->
+<section>
+  <div class="container">
+    <h2 class="section-title h5">Data that could be used</h2>
+    <p class="text-muted-custom mb-0">
+      Purchase frequency, average ticket size, product categories purchased, discount usage,
+      preferred shopping channel (in-store, app, or website), and time since the customer's last purchase.
+    </p>
+  </div>
+</section>
+
+<!-- Qué debería descubrir el modelo -->
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h5">What should the model discover?</h2>
+    <p class="text-muted-custom mb-0">
+      Groups of customers with similar purchase patterns, such as frequent high-spenders,
+      occasional bargain shoppers, or seasonal buyers, along with the typical shopping behavior of
+      each group.
+    </p>
+  </div>
+</section>
+
+<!-- Tipo de Machine Learning aplicable -->
+<section>
+  <div class="container">
+    <h2 class="section-title h5">Type of Machine Learning that could apply</h2>
+    <p class="text-muted-custom mb-0">
+      Unsupervised learning, since there are no predefined labels telling the model which customer
+      belongs to which group. This is a clustering problem.
+    </p>
+  </div>
+</section>
+
+<!-- Beneficio potencial -->
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h5">Potential benefit</h2>
+    <div class="note-box mb-0">
+      With clear customer segments, the marketing team can design targeted campaigns, such as
+      discounts for bargain hunters or loyalty perks for high-spenders, increasing the relevance of
+      every promotion and improving customer satisfaction and retention.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="text-center">
+  <div class="container">Data with Roots — a Machine Learning project</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
