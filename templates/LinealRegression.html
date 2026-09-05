@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Regression Concepts</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14181C;
+    --bg-2:#1D2227;
+    --card:#20262C;
+    --ink:#EDEAE0;
+    --muted:#A5ACB3;
+    --ochre:#D99B3C;
+    --teal:#4FA393;
+    --line:#333B42;
+  }
+  body{
+    font-family:'Public Sans', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  h1, h2, h3, .navbar-brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+  }
+  .navbar{
+    background:var(--bg-2) !important;
+    border-bottom:2px solid var(--line);
+  }
+  .navbar-brand, .nav-link{
+    color:var(--ink) !important;
+  }
+  .nav-link:hover{
+    color:var(--ochre) !important;
+  }
+  .badge-eyebrow{
+    letter-spacing:.08em;
+    font-size:.72rem;
+    text-transform:uppercase;
+    color:var(--teal);
+  }
+  section{
+    padding:3.5rem 0;
+  }
+  .section-title{
+    border-bottom:2px solid var(--line);
+    padding-bottom:.5rem;
+    margin-bottom:2rem;
+  }
+  .bg-alt{
+    background:var(--bg-2);
+  }
+  .card-type, .card-custom{
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:var(--card);
+    height:100%;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card-type:hover, .card-custom:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+    border-color:var(--ochre);
+  }
+  .card-type .icon-wrap, .card-custom .icon-wrap{
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--bg-2);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:.9rem;
+  }
+  .kicker{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ochre);
+    font-weight:600;
+  }
+  .card-type p, .card-type ul, .card-custom p, .card-custom ul{
+    color:var(--muted);
+  }
+  .note-box{
+    background:var(--card);
+    border-left:4px solid var(--ochre);
+    border-radius:2px;
+    padding:1.2rem 1.4rem;
+    color:var(--muted);
+  }
+  .text-muted-custom{
+    color:var(--muted) !important;
+  }
+  .flow-step{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1.2rem;
+    text-align:center;
+  }
+  .flow-arrow{
+    color:var(--ochre);
+    font-size:1.6rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .formula-box{
+    background:var(--bg-2);
+    border:1px dashed var(--line);
+    border-radius:4px;
+    padding:1.2rem 1.4rem;
+    text-align:center;
+    font-family:'Fraunces', serif;
+    font-size:1.3rem;
+    color:var(--ochre);
+  }
+  .formula-box small{
+    display:block;
+    font-family:'Public Sans', sans-serif;
+    font-size:.75rem;
+    color:var(--muted);
+    margin-top:.5rem;
+  }
+  footer{
+    border-top:2px solid var(--line);
+    padding:1.5rem 0;
+    font-size:.85rem;
+    color:var(--muted);
+    background:var(--bg-2);
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Data with Roots</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- Header -->
+<section class="pt-5 pb-3">
+  <div class="container">
+    <span class="badge-eyebrow">Supervised Learning</span>
+    <h1 class="mt-2">Linear Regression — Concepts</h1>
+    <p class="text-muted-custom" style="max-width:44rem;">
+      Before jumping into the practical implementation, let's walk through the core ideas that
+      explain how Linear Regression actually works.
+    </p>
+  </div>
+</section>
+
+<!-- 1. What is Linear Regression? -->
+<section class="bg-alt">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 class="section-title h4">What is Linear Regression?</h2>
+        <p class="text-muted-custom">
+          <strong style="color:var(--ink);">Linear Regression</strong> is a supervised learning
+          algorithm used to model the relationship between two variables by fitting a straight
+          line to a set of observed data points.
+        </p>
+        <p class="text-muted-custom">
+          Once that line is fitted, it can be used to estimate the value of one variable based on
+          the value of the other — even for cases the model has never seen before.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title h4">What types of problems can be solved using Linear Regression?</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card-custom p-4">
+          <div class="icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 8-8"/></svg>
+          </div>
+          <h3 class="h6" style="color:var(--ink);">Estimating numeric values</h3>
+          <p class="small mb-0">Predicting a price, a score, a temperature, or any other quantity that changes continuously.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-custom p-4">
+          <div class="icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/></svg>
+          </div>
+          <h3 class="h6" style="color:var(--ink);">Studying trends</h3>
+          <p class="small mb-0">Understanding whether one variable tends to increase or decrease as another one changes.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-custom p-4">
+          <div class="icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D99B3C" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3 class="h6" style="color:var(--ink);">Forecasting outcomes</h3>
+          <p class="small mb-0">Estimating a future or unknown result from a single known input value.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3-4. Independent and dependent variable -->
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h4">Independent and dependent variable</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card-custom p-4">
+          <div class="kicker mb-1">Input</div>
+          <h3 class="h5" style="color:var(--ink);">Independent variable (X)</h3>
+          <p class="mb-0">
+            The variable used as the known input to make a prediction. It's the value you
+            already have and feed into the model.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-custom p-4">
+          <div class="kicker mb-1">Output</div>
+          <h3 class="h5" style="color:var(--ink);">Dependent variable (Y)</h3>
+          <p class="mb-0">
+            The variable the model tries to predict. Its value is assumed to depend, at least
+            partly, on the independent variable.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title h4">Relationship between variables</h2>
+    <p class="text-muted-custom" style="max-width:44rem;">
+      Linear Regression assumes there is a <strong style="color:var(--ink);">linear
+      relationship</strong> between X and Y — meaning that, on average, Y changes at a fairly
+      constant rate as X changes. This relationship can be positive (Y increases as X increases)
+      or negative (Y decreases as X increases).
+    </p>
+    <div class="row g-4 mt-1">
+      <div class="col-md-6">
+        <div class="card-custom p-4">
+          <h3 class="h6" style="color:var(--ink);">Positive relationship</h3>
+          <p class="small mb-0">As X increases, Y also tends to increase. Example: more hours studied, higher exam scores.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-custom p-4">
+          <h3 class="h6" style="color:var(--ink);">Negative relationship</h3>
+          <p class="small mb-0">As X increases, Y tends to decrease. Example: more years of use, lower resale value.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Regression line -->
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h4">The regression line</h2>
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <p class="text-muted-custom">
+          The <strong style="color:var(--ink);">regression line</strong> is the straight line
+          that best summarizes the relationship between X and Y. It is chosen so that the overall
+          distance between the line and all the observed data points is as small as possible.
+        </p>
+        <p class="text-muted-custom mb-0">
+          This line is described by a simple mathematical equation, where the slope tells you how
+          much Y changes for each unit increase in X.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="formula-box">
+          Y = mX + b
+          <small>m = slope · b = intercept</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Prediction -->
+<section>
+  <div class="container">
+    <h2 class="section-title h4">Prediction</h2>
+    <p class="text-muted-custom" style="max-width:44rem;">
+      Once the regression line has been fitted using existing data, it can be used to
+      <strong style="color:var(--ink);">predict</strong> the value of Y for any new value of X —
+      even one that wasn't part of the original dataset. The model simply plugs the new X value
+      into the line's equation to produce the estimated Y.
+    </p>
+  </div>
+</section>
+
+<!-- 8. Simple example -->
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h4">A simple example</h2>
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="note-box">
+          <p class="mb-2">
+            Imagine you want to predict a student's exam score based on how many hours they studied.
+          </p>
+          <ul class="mb-2 ps-3">
+            <li><strong style="color:var(--ink);">Independent variable (X):</strong> hours studied</li>
+            <li><strong style="color:var(--ink);">Dependent variable (Y):</strong> exam score</li>
+          </ul>
+          <p class="mb-0">
+            After training on data from previous students, the model finds a line showing that,
+            on average, each extra hour of study is associated with a certain increase in score.
+            If a new student studies for 5 hours, the model uses that line to estimate what their
+            exam score is likely to be.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="text-center">
+  <div class="container">Data with Roots — a Machine Learning project</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
