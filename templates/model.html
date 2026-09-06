@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Visualization</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14181C;
+    --bg-2:#1D2227;
+    --card:#20262C;
+    --ink:#EDEAE0;
+    --muted:#A5ACB3;
+    --ochre:#D99B3C;
+    --teal:#4FA393;
+    --line:#333B42;
+  }
+  body{
+    font-family:'Public Sans', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  h1, h2, .navbar-brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+  }
+  .navbar{
+    background:var(--bg-2) !important;
+    border-bottom:2px solid var(--line);
+  }
+  .navbar-brand{
+    color:var(--ink) !important;
+  }
+  .badge-eyebrow{
+    letter-spacing:.08em;
+    font-size:.72rem;
+    text-transform:uppercase;
+    color:var(--teal);
+  }
+  section{
+    padding:2.5rem 0;
+  }
+  .section-title{
+    border-bottom:2px solid var(--line);
+    padding-bottom:.5rem;
+    margin-bottom:1rem;
+  }
+  .bg-alt{
+    background:var(--bg-2);
+  }
+  .text-muted-custom{
+    color:var(--muted) !important;
+  }
+  .text-ink{
+    color:var(--ink) !important;
+  }
+  .note-box{
+    background:var(--card);
+    border-left:4px solid var(--ochre);
+    border-radius:2px;
+    padding:1.2rem 1.4rem;
+    color:var(--muted);
+  }
+  .plot-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1rem;
+  }
+  .plot-card img{
+    width:100%;
+    height:auto;
+    border-radius:2px;
+  }
+  .predict-form input[type="number"]{
+    background:var(--bg);
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .predict-form input[type="number"]:focus{
+    background:var(--bg);
+    color:var(--ink);
+    border-color:var(--teal);
+    box-shadow:none;
+  }
+  .btn-predict{
+    background:var(--ochre);
+    border:none;
+    color:var(--bg);
+    font-weight:600;
+  }
+  .btn-predict:hover{
+    background:#c98a2c;
+    color:var(--bg);
+  }
+  .result-box{
+    background:var(--card);
+    border-left:4px solid var(--teal);
+    border-radius:2px;
+    padding:1rem 1.2rem;
+  }
+  footer{
+    border-top:2px solid var(--line);
+    padding:1.5rem 0;
+    font-size:.85rem;
+    color:var(--muted);
+    background:var(--bg-2);
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Data with Roots</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="pt-5 pb-3">
+  <div class="container">
+    <span class="badge-eyebrow">Step 4</span>
+    <h1 class="mt-2">Data Visualization</h1>
+    <p class="text-muted-custom mb-0">
+      Scatter plot of storage capacity vs. price, with the regression line fitted by the
+      Simple Linear Regression model.
+    </p>
+  </div>
+</section>
+
+<section class="bg-alt">
+  <div class="container">
+    <div class="plot-card">
+      <img src="data:image/png;base64,{{ plot_image }}" alt="Scatter plot of storage capacity vs price with regression line">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title h5">Try a prediction</h2>
+    <p class="text-muted-custom">
+      Enter a storage capacity to see the price the model predicts for it.
+    </p>
+    <form method="POST" class="predict-form row g-2 align-items-center">
+      <div class="col-auto">
+        <input type="number" step="1" min="0" name="storage_gb" class="form-control"
+               placeholder="e.g. 512" value="{{ storage_input or '' }}" required>
+      </div>
+      <div class="col-auto">
+        <span class="text-muted-custom">GB</span>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-predict">Predict price</button>
+      </div>
+    </form>
+
+{% if predicted_price is not none %}
+<div class="result-box mt-3">
+
+    <span class="text-muted-custom">
+        Predicted price for {{ storage_input }} GB:
+    </span>
+
+    <span class="text-ink fw-bold">
+        ${{ predicted_price }} COP
+    </span>
+
+</div>
+{% endif %}
+
+<section class="bg-alt">
+  <div class="container">
+    <h2 class="section-title h5">Model summary</h2>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="note-box h-100">
+          <span class="badge-eyebrow d-block mb-2">Records used</span>
+          <p class="text-ink mb-0">{{ n_records }}</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="note-box h-100">
+          <span class="badge-eyebrow d-block mb-2">Regression equation</span>
+          <p class="text-ink mb-0">Price = {{ intercept }} + {{ coef }} &times; Storage_GB</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="note-box h-100">
+          <span class="badge-eyebrow d-block mb-2">Test error</span>
+          <p class="text-ink mb-0">MAE: {{ mae }} COP<br>RMSE: {{ rmse }} COP</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="note-box h-100">
+          <span class="badge-eyebrow d-block mb-2">R&sup2; Score</span>
+          <p class="text-ink mb-0">{{ r2 }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="text-center">
+  <div class="container">Data with Roots — a Machine Learning project</div>
+</footer>
+
+</body>
+</html>
