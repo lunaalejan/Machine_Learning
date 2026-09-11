@@ -62,6 +62,7 @@
         .dropdown-menu {
             background: var(--bg-2);
             border: 1px solid var(--line);
+            min-width: 230px;
         }
 
         .dropdown-item {
@@ -75,10 +76,16 @@
 
         .dropdown-header {
             color: var(--teal);
+            font-weight: 600;
         }
 
         .dropdown-divider {
             border-color: var(--line);
+        }
+
+        .dropdown-item.disabled {
+            color: var(--muted);
+            opacity: 0.65;
         }
 
         main {
@@ -110,7 +117,6 @@
                 Data with Roots
             </a>
 
-            <!-- BOTÓN RESPONSIVE -->
             <button
                 class="navbar-toggler"
                 type="button"
@@ -128,16 +134,21 @@
 
                 <ul class="navbar-nav ms-auto">
 
+                    <!-- HOME -->
                     <li class="nav-item">
 
                         <a
                             class="nav-link"
                             href="{{ url_for('home') }}">
+
                             Home
+
                         </a>
 
                     </li>
 
+
+                    <!-- MACHINE LEARNING -->
                     <li class="nav-item dropdown">
 
                         <a
@@ -157,7 +168,9 @@
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('home') }}">
+
                                     Concepts
+
                                 </a>
                             </li>
 
@@ -165,7 +178,9 @@
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('home') }}">
+
                                     Types of Machine Learning
+
                                 </a>
                             </li>
 
@@ -174,6 +189,7 @@
                     </li>
 
 
+                    <!-- USE CASES -->
                     <li class="nav-item dropdown">
 
                         <a
@@ -190,36 +206,36 @@
                         <ul class="dropdown-menu">
 
                             <li>
-
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('use_case_1') }}">
+
                                     Use Case 1
+
                                 </a>
                             </li>
 
                             <li>
-
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('use_case_2') }}">
-                                    Use Case 2
-                                </a>
 
+                                    Use Case 2
+
+                                </a>
                             </li>
 
                             <li>
-
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('use_case_3') }}">
-                                    Use Case 3
-                                </a>
 
+                                    Use Case 3
+
+                                </a>
                             </li>
 
                             <li>
-
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('use_case_4') }}">
@@ -227,7 +243,6 @@
                                     Use Case 4
 
                                 </a>
-
                             </li>
 
                         </ul>
@@ -251,9 +266,14 @@
 
                         <ul class="dropdown-menu">
 
-                            <!-- CONCEPTS -->
+                            <!-- LINEAR REGRESSION -->
                             <li>
+                                <h6 class="dropdown-header">
+                                    Linear Regression
+                                </h6>
+                            </li>
 
+                            <li>
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('Lineal') }}">
@@ -261,12 +281,9 @@
                                     Concepts
 
                                 </a>
-
                             </li>
 
-                            <!-- APPLICATION -->
                             <li>
-
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('appli') }}">
@@ -274,12 +291,9 @@
                                     Application
 
                                 </a>
-
                             </li>
 
-                            <!-- MODEL -->
                             <li>
-
                                 <a
                                     class="dropdown-item"
                                     href="{{ url_for('md') }}">
@@ -287,7 +301,96 @@
                                     Model
 
                                 </a>
+                            </li>
 
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+
+                            <!-- LOGISTIC REGRESSION -->
+                            <li>
+                                <h6 class="dropdown-header">
+                                    Logistic Regression
+                                </h6>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="dropdown-item disabled"
+                                    href="#"
+                                    aria-disabled="true">
+
+                                    Concepts
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="dropdown-item disabled"
+                                    href="#"
+                                    aria-disabled="true">
+
+                                    Application
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="dropdown-item disabled"
+                                    href="#"
+                                    aria-disabled="true">
+
+                                    Evaluation Metrics
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+
+                            <!-- NAIVE BAYES -->
+                            <li>
+                                <h6 class="dropdown-header">
+                                    Naive Bayes
+                                </h6>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="dropdown-item disabled"
+                                    href="#"
+                                    aria-disabled="true">
+
+                                    Concepts
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="dropdown-item disabled"
+                                    href="#"
+                                    aria-disabled="true">
+
+                                    Application
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="dropdown-item disabled"
+                                    href="#"
+                                    aria-disabled="true">
+
+                                    Evaluation Metrics
+
+                                </a>
                             </li>
 
                         </ul>
@@ -303,7 +406,7 @@
     </nav>
 
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- MAIN CONTENT -->
     <main>
 
         {% block content %}
