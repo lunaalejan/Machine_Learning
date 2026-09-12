@@ -322,6 +322,18 @@ def logistic_metrics():
         f1=f"{f1 * 100:.2f}"
     )
 
+#----------------------------------------------------
+#NAVI BAYES CONCEPTS
+#----------------------------------------------------
+
+@app.route(
+    "/navie-bayes/concepts"
+)
+def navie_bayes_concepts():
+
+    return render_template(
+        "navie_bayes_concepts.html"
+    )
 
 # ---------------------------------------------------
 # RUN APPLICATION

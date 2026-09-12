@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="mb-5">
+        <p class="text-uppercase" style="color: #20c997; font-size: 13px;">
+            SUPERVISED LEARNING
+        </p>
+
+        <h1 class="display-4 fw-bold" style="color: #f5f0e8;">
+            Naive Bayes
+        </h1>
+
+        <p style="color: #b8c0c8; max-width: 850px; line-height: 1.8;">
+            Naive Bayes is a supervised machine learning algorithm based on
+            Bayes' Theorem. It is mainly used for classification problems and
+            predicts the probability that an observation belongs to a specific class.
+        </p>
+    </div>
+
+
+    <!-- What is Naive Bayes -->
+    <h2 class="mb-3" style="color: #f39c12;">
+        What is Naive Bayes?
+    </h2>
+
+    <div class="p-4 mb-5"
+         style="background-color: #20272d;
+                border: 1px solid #37414a;
+                border-radius: 12px;">
+
+        <p style="color: #b8c0c8; line-height: 1.8; margin-bottom: 0;">
+            Naive Bayes is a supervised machine learning algorithm used for
+            classification. It is based on Bayes' Theorem and calculates the
+            probability that a data point belongs to a particular class.
+            The algorithm is simple, fast, and especially useful when working
+            with large datasets.
+        </p>
+
+    </div>
+
+
+    <!-- How does it work / Bayes -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    How does Naive Bayes work?
+                </h3>
+
+                <p style="color: #b8c0c8; line-height: 1.8;">
+                    Naive Bayes analyzes the input features and calculates the
+                    probability of each possible class. It uses the available
+                    data to determine which class has the highest probability.
+                    The class with the highest probability becomes the final prediction.
+                </p>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Bayes' Theorem
+                </h3>
+
+                <p style="color: #b8c0c8; line-height: 1.8;">
+                    Bayes' Theorem calculates the probability of an event based
+                    on previous knowledge and new evidence.
+                </p>
+
+                <div class="text-center py-3">
+                    <span style="color: #f5f0e8; font-size: 22px;">
+                        P(A|B) = P(B|A) × P(A) / P(B)
+                    </span>
+                </div>
+
+                <p style="color: #b8c0c8; line-height: 1.8; margin-bottom: 0;">
+                    This equation allows the model to update the probability
+                    of a class when new information becomes available.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Why Naive -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Why is it called "Naive"?
+                </h3>
+
+                <p style="color: #b8c0c8; line-height: 1.8;">
+                    It is called "Naive" because the algorithm assumes that
+                    all input features are independent of each other.
+                    In real-world situations, this assumption is often not
+                    completely true, but the algorithm can still provide
+                    accurate and useful predictions.
+                </p>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Types of problems it can solve
+                </h3>
+
+                <p style="color: #b8c0c8; line-height: 1.8;">
+                    Naive Bayes can solve different classification problems,
+                    such as:
+                </p>
+
+                <ul style="color: #b8c0c8; line-height: 1.8;">
+                    <li>Email spam detection</li>
+                    <li>Sentiment analysis</li>
+                    <li>Document classification</li>
+                    <li>Medical diagnosis classification</li>
+                    <li>News categorization</li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Characteristics -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Main Characteristics
+                </h3>
+
+                <ul style="color: #b8c0c8; line-height: 1.9;">
+                    <li>It is a supervised learning algorithm.</li>
+                    <li>It is mainly used for classification.</li>
+                    <li>It is based on Bayes' Theorem.</li>
+                    <li>It assumes feature independence.</li>
+                    <li>It is computationally efficient.</li>
+                    <li>It works well with large datasets.</li>
+                </ul>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Advantages
+                </h3>
+
+                <ul style="color: #b8c0c8; line-height: 1.9;">
+                    <li>Simple and easy to implement.</li>
+                    <li>Fast training and prediction.</li>
+                    <li>Requires relatively little training data.</li>
+                    <li>Works well with high-dimensional datasets.</li>
+                    <li>Useful for text classification.</li>
+                    <li>Can handle multiple classes.</li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Limitations / Example -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Limitations
+                </h3>
+
+                <ul style="color: #b8c0c8; line-height: 1.9;">
+                    <li>The independence assumption may not be realistic.</li>
+                    <li>Zero-frequency problems can occur.</li>
+                    <li>It may perform poorly when features are highly correlated.</li>
+                    <li>Probability estimates may not always be well calibrated.</li>
+                </ul>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="h-100 p-4"
+                 style="background-color: #20272d;
+                        border: 1px solid #37414a;
+                        border-radius: 12px;">
+
+                <h3 style="color: #20c997; font-size: 20px;">
+                    Real-world Classification Example
+                </h3>
+
+                <p style="color: #b8c0c8; line-height: 1.8;">
+                    A common example is email spam detection. The model can
+                    analyze words and characteristics found in an email and
+                    calculate the probability that the message is spam or not spam.
+                </p>
+
+                <p style="color: #b8c0c8; line-height: 1.8; margin-bottom: 0;">
+                    For example, if an email contains words frequently associated
+                    with spam, Naive Bayes can assign a high probability to the
+                    "Spam" class.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Gaussian Naive Bayes -->
+    <div class="p-4 mb-5"
+         style="background-color: #20272d;
+                border: 1px solid #37414a;
+                border-radius: 12px;">
+
+        <h3 style="color: #20c997; font-size: 20px;">
+            Gaussian Naive Bayes
+        </h3>
+
+        <p style="color: #b8c0c8; line-height: 1.8;">
+            Gaussian Naive Bayes is a variant of the Naive Bayes algorithm
+            designed for continuous numerical data. It assumes that the values
+            of each feature follow a Gaussian, or normal, distribution within
+            each class.
+        </p>
+
+        <p style="color: #b8c0c8; line-height: 1.8; margin-bottom: 0;">
+            It is useful when the input variables are numerical, such as age,
+            temperature, height, weight, income, or other continuous measurements.
+            Gaussian Naive Bayes is commonly implemented using
+            <strong style="color: #f5f0e8;">GaussianNB</strong> from
+            Scikit-learn.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
