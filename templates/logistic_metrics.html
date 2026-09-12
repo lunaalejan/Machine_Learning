@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Logistic Regression Metrics | Data with Roots
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .metrics-page {
+        padding: 4rem 0;
+    }
+
+    .page-title {
+        font-family: 'Fraunces', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: var(--muted);
+        max-width: 800px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        margin-bottom: 1.5rem;
+    }
+
+    .metric-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        text-align: center;
+        height: 100%;
+    }
+
+    .metric-value {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        font-size: 2.2rem;
+        margin-bottom: .5rem;
+    }
+
+    .metric-card h3 {
+        color: var(--teal);
+        font-size: 1.2rem;
+    }
+
+    .metric-card p {
+        color: var(--muted);
+        margin-bottom: 0;
+        line-height: 1.6;
+    }
+
+    .matrix-container {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 2rem;
+    }
+
+    .matrix-table {
+        width: 100%;
+        text-align: center;
+        border-collapse: separate;
+        border-spacing: 8px;
+    }
+
+    .matrix-table th {
+        color: var(--teal);
+        padding: 1rem;
+    }
+
+    .matrix-cell {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
+    .matrix-cell strong {
+        display: block;
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        font-size: 2rem;
+    }
+
+    .matrix-cell span {
+        color: var(--muted);
+        font-size: .9rem;
+    }
+
+    .interpretation-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 2rem;
+    }
+
+    .interpretation-card p {
+        color: var(--muted);
+        line-height: 1.8;
+    }
+
+    .definition-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .definition-card h3 {
+        color: var(--teal);
+        font-size: 1.2rem;
+    }
+
+    .definition-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="metrics-page">
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="mb-5">
+
+            <p
+                class="text-uppercase small mb-2"
+                style="color: var(--teal);">
+
+                Supervised Learning
+
+            </p>
+
+            <h1 class="page-title">
+                Logistic Regression Evaluation Metrics
+            </h1>
+
+            <p class="page-subtitle">
+
+                The Logistic Regression model is evaluated using the 20%
+                testing dataset. These observations were not used during
+                model training.
+
+            </p>
+
+        </div>
+
+
+        <!-- TEST DATA -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Testing Dataset
+            </h2>
+
+            <div class="metric-card">
+
+                <div class="metric-value">
+                    {{ test_records }}
+                </div>
+
+                <h3>
+                    Testing Records
+                </h3>
+
+                <p>
+                    These records correspond to 20% of the complete dataset.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFUSION MATRIX -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Confusion Matrix
+            </h2>
+
+            <div class="matrix-container">
+
+                <div class="table-responsive">
+
+                    <table class="matrix-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th></th>
+
+                                <th>
+                                    Predicted Class 0
+                                </th>
+
+                                <th>
+                                    Predicted Class 1
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <th>
+                                    Actual Class 0
+                                </th>
+
+                                <td class="matrix-cell">
+
+                                    <strong>
+                                        {{ tn }}
+                                    </strong>
+
+                                    <span>
+                                        True Negative
+                                    </span>
+
+                                </td>
+
+
+                                <td class="matrix-cell">
+
+                                    <strong>
+                                        {{ fp }}
+                                    </strong>
+
+                                    <span>
+                                        False Positive
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>
+                                    Actual Class 1
+                                </th>
+
+                                <td class="matrix-cell">
+
+                                    <strong>
+                                        {{ fn }}
+                                    </strong>
+
+                                    <span>
+                                        False Negative
+                                    </span>
+
+                                </td>
+
+
+                                <td class="matrix-cell">
+
+                                    <strong>
+                                        {{ tp }}
+                                    </strong>
+
+                                    <span>
+                                        True Positive
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFUSION MATRIX DEFINITIONS -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Confusion Matrix Interpretation
+            </h2>
+
+
+            <div class="row g-4">
+
+
+                <div class="col-md-6">
+
+                    <div class="definition-card">
+
+                        <h3>
+                            True Positive (TP)
+                        </h3>
+
+                        <p>
+
+                            Customers that actually belong to the Purchase
+                            class and were correctly classified as Purchase.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="definition-card">
+
+                        <h3>
+                            True Negative (TN)
+                        </h3>
+
+                        <p>
+
+                            Customers that actually belong to the No Purchase
+                            class and were correctly classified as No Purchase.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="definition-card">
+
+                        <h3>
+                            False Positive (FP)
+                        </h3>
+
+                        <p>
+
+                            Customers predicted as Purchase even though they
+                            actually belong to the No Purchase class.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="definition-card">
+
+                        <h3>
+                            False Negative (FN)
+                        </h3>
+
+                        <p>
+
+                            Customers predicted as No Purchase even though they
+                            actually belong to the Purchase class.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- METRICS -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Classification Metrics
+            </h2>
+
+
+            <div class="row g-4">
+
+
+                <div class="col-md-3">
+
+                    <div class="metric-card">
+
+                        <div class="metric-value">
+                            {{ accuracy }}%
+                        </div>
+
+                        <h3>
+                            Accuracy
+                        </h3>
+
+                        <p>
+
+                            Percentage of all testing observations that were
+                            classified correctly.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="metric-card">
+
+                        <div class="metric-value">
+                            {{ precision }}%
+                        </div>
+
+                        <h3>
+                            Precision
+                        </h3>
+
+                        <p>
+
+                            Percentage of predicted Purchase cases that were
+                            actually Purchase cases.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="metric-card">
+
+                        <div class="metric-value">
+                            {{ recall }}%
+                        </div>
+
+                        <h3>
+                            Recall
+                        </h3>
+
+                        <p>
+
+                            Percentage of actual Purchase cases that the model
+                            correctly identified.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="metric-card">
+
+                        <div class="metric-value">
+                            {{ f1 }}%
+                        </div>
+
+                        <h3>
+                            F1-score
+                        </h3>
+
+                        <p>
+
+                            Balanced measure that combines Precision and
+                            Recall into one score.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- MODEL PERFORMANCE -->
+
+        <div>
+
+            <h2 class="section-title">
+                Model Performance Interpretation
+            </h2>
+
+
+            <div class="interpretation-card">
+
+                <p>
+
+                    The Logistic Regression model was evaluated using
+                    {{ test_records }} testing observations, corresponding
+                    to 20% of the dataset.
+
+                </p>
+
+
+                <p>
+
+                    The model achieved an Accuracy of
+                    <strong>{{ accuracy }}%</strong>,
+                    which represents the percentage of testing observations
+                    classified correctly.
+
+                </p>
+
+
+                <p>
+
+                    The Precision score of
+                    <strong>{{ precision }}%</strong>
+                    indicates how reliable the positive Purchase predictions
+                    were.
+
+                    The Recall score of
+                    <strong>{{ recall }}%</strong>
+                    indicates how many of the actual Purchase cases were
+                    successfully identified by the model.
+
+                </p>
+
+
+                <p class="mb-0">
+
+                    The F1-score of
+                    <strong>{{ f1 }}%</strong>
+                    summarizes the balance between Precision and Recall.
+
+                    These metrics provide a more complete understanding of
+                    the classification performance than Accuracy alone.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+{% endblock %}

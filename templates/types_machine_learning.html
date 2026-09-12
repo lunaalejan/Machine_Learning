@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}
+Types of Machine Learning | Data with Roots
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .types-page {
+        padding: 4rem 0;
+    }
+
+    .page-title {
+        font-family: 'Fraunces', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: var(--muted);
+        max-width: 780px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .type-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.8rem;
+        height: 100%;
+    }
+
+    .type-card h2 {
+        color: var(--teal);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .type-card p {
+        color: var(--muted);
+        line-height: 1.7;
+    }
+
+    .example-box {
+        background: var(--bg-2);
+        border-left: 4px solid var(--ochre);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1.3rem;
+    }
+
+    .example-box strong {
+        color: var(--ink);
+    }
+
+    .example-box p {
+        margin-bottom: 0;
+        margin-top: .4rem;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="types-page">
+
+    <div class="container">
+
+        <div class="mb-5">
+
+            <p
+                class="text-uppercase small mb-2"
+                style="color: var(--teal);">
+
+                Machine Learning
+
+            </p>
+
+            <h1 class="page-title">
+                Types of Machine Learning
+            </h1>
+
+            <p class="page-subtitle">
+
+                Machine Learning can be divided into different types depending
+                on how algorithms learn from data. The main types are
+                Supervised Learning, Unsupervised Learning and Reinforcement
+                Learning.
+
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- SUPERVISED LEARNING -->
+            <div class="col-lg-4">
+
+                <div class="type-card">
+
+                    <h2>
+                        Supervised Learning
+                    </h2>
+
+                    <p>
+
+                        Supervised Learning uses labeled data. This means that
+                        the dataset contains input variables and a known output.
+
+                    </p>
+
+                    <p>
+
+                        The model learns the relationship between the input data
+                        and the expected result so that it can make predictions
+                        with new observations.
+
+                    </p>
+
+                    <div class="example-box">
+
+                        <strong>
+                            Examples
+                        </strong>
+
+                        <p>
+                            Linear Regression, Logistic Regression and
+                            Naive Bayes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- UNSUPERVISED LEARNING -->
+            <div class="col-lg-4">
+
+                <div class="type-card">
+
+                    <h2>
+                        Unsupervised Learning
+                    </h2>
+
+                    <p>
+
+                        Unsupervised Learning works with data that does not have
+                        predefined labels or expected results.
+
+                    </p>
+
+                    <p>
+
+                        The algorithm analyzes the information and tries to
+                        discover patterns, structures or groups within the
+                        dataset.
+
+                    </p>
+
+                    <div class="example-box">
+
+                        <strong>
+                            Example
+                        </strong>
+
+                        <p>
+                            Customer segmentation using clustering.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- REINFORCEMENT LEARNING -->
+            <div class="col-lg-4">
+
+                <div class="type-card">
+
+                    <h2>
+                        Reinforcement Learning
+                    </h2>
+
+                    <p>
+
+                        Reinforcement Learning allows an agent to learn by
+                        interacting with an environment.
+
+                    </p>
+
+                    <p>
+
+                        The agent receives rewards or penalties according to its
+                        actions and gradually learns which decisions produce
+                        better results.
+
+                    </p>
+
+                    <div class="example-box">
+
+                        <strong>
+                            Examples
+                        </strong>
+
+                        <p>
+                            Robotics, autonomous systems and game-playing
+                            artificial intelligence.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

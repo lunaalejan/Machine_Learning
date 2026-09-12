@@ -1,0 +1,853 @@
+{% extends "base.html" %}
+
+{% block title %}
+Logistic Regression Application | Data with Roots
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .application-page {
+        padding: 4rem 0;
+    }
+
+    .page-title {
+        font-family: 'Fraunces', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: var(--muted);
+        max-width: 820px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        margin-bottom: 1.5rem;
+    }
+
+    .info-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .info-card h3 {
+        color: var(--teal);
+        font-size: 1.2rem;
+        margin-bottom: .8rem;
+    }
+
+    .info-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .number-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        text-align: center;
+        height: 100%;
+    }
+
+    .number-card .number {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .number-card p {
+        color: var(--muted);
+        margin-bottom: 0;
+    }
+
+    .data-table {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .data-table table {
+        margin-bottom: 0;
+    }
+
+    .data-table th {
+        background: var(--bg-2);
+        color: var(--teal);
+        border-color: var(--line);
+    }
+
+    .data-table td {
+        background: var(--card);
+        color: var(--ink);
+        border-color: var(--line);
+    }
+
+    .process-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        height: 100%;
+    }
+
+    .process-card strong {
+        color: var(--teal);
+    }
+
+    .process-arrow {
+        color: var(--ochre);
+        font-size: 1.6rem;
+        text-align: center;
+        padding-top: .7rem;
+    }
+
+    .graph-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+    }
+
+    .graph-card img {
+        width: 100%;
+        border-radius: 10px;
+        background: white;
+    }
+
+    .form-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 2rem;
+    }
+
+    .form-control {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        color: var(--ink);
+    }
+
+    .form-control:focus {
+        background: var(--bg-2);
+        color: var(--ink);
+        border-color: var(--ochre);
+        box-shadow: none;
+    }
+
+    .form-label {
+        color: var(--ink);
+        font-weight: 500;
+    }
+
+    .form-text {
+        color: var(--muted) !important;
+    }
+
+    .btn-classify {
+        background: var(--ochre);
+        color: #14181C;
+        border: none;
+        font-weight: 600;
+        padding: .75rem 1.5rem;
+    }
+
+    .btn-classify:hover {
+        background: #E5AA4D;
+        color: #14181C;
+    }
+
+    .result-card {
+        background: var(--bg-2);
+        border-left: 4px solid var(--teal);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .result-card h3 {
+        color: var(--teal);
+    }
+
+    .error-card {
+        background: var(--bg-2);
+        border-left: 4px solid #C96A6A;
+        border-radius: 10px;
+        padding: 1.2rem;
+        margin-top: 1.5rem;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="application-page">
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="mb-5">
+
+            <p
+                class="text-uppercase small mb-2"
+                style="color: var(--teal);">
+
+                Supervised Learning
+
+            </p>
+
+            <h1 class="page-title">
+                Logistic Regression Application
+            </h1>
+
+            <p class="page-subtitle">
+
+                This application implements a Binary Logistic Regression model
+                to classify customer purchase behavior using the number of
+                monthly visits to a website.
+
+            </p>
+
+        </div>
+
+
+        <!-- PROBLEM CONTEXT -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Problem Context
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <div class="info-card">
+
+                        <h3>
+                            Problem
+                        </h3>
+
+                        <p>
+
+                            The model analyzes customer website activity to
+                            determine whether a customer is likely to belong
+                            to the Purchase or No Purchase class.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="info-card">
+
+                        <h3>
+                            Data
+                        </h3>
+
+                        <p>
+
+                            The dataset contains information about customers,
+                            including age, income, website activity, previous
+                            purchases, discounts and a binary target variable.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="info-card">
+
+                        <h3>
+                            Independent Variable
+                        </h3>
+
+                        <p>
+
+                            <strong>visitas_web_mes</strong>
+
+                            <br>
+
+                            Represents the number of visits made by a customer
+                            to the website during one month.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="info-card">
+
+                        <h3>
+                            Target Variable
+                        </h3>
+
+                        <p>
+
+                            <strong>target</strong>
+
+                            <br>
+
+                            The binary variable that contains the class that
+                            the model attempts to predict.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DATASET INFORMATION -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Dataset Information
+            </h2>
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-md-3">
+
+                    <div class="number-card">
+
+                        <div class="number">
+                            {{ n_records }}
+                        </div>
+
+                        <p>
+                            Total Records
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="number-card">
+
+                        <div class="number">
+                            {{ class_0_records }}
+                        </div>
+
+                        <p>
+                            Class 0 Records
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="number-card">
+
+                        <div class="number">
+                            {{ class_1_records }}
+                        </div>
+
+                        <p>
+                            Class 1 Records
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="number-card">
+
+                        <div class="number">
+                            2
+                        </div>
+
+                        <p>
+                            Possible Classes
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="data-table">
+
+                <div class="table-responsive">
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Element
+                                </th>
+
+                                <th>
+                                    Variable
+                                </th>
+
+                                <th>
+                                    Meaning
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Independent Variable
+                                </td>
+
+                                <td>
+                                    visitas_web_mes
+                                </td>
+
+                                <td>
+                                    Monthly website visits
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Target Variable
+                                </td>
+
+                                <td>
+                                    target
+                                </td>
+
+                                <td>
+                                    Binary purchase classification
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Class 0
+                                </td>
+
+                                <td>
+                                    No Purchase
+                                </td>
+
+                                <td>
+                                    Customer classified as not making a purchase
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Class 1
+                                </td>
+
+                                <td>
+                                    Purchase
+                                </td>
+
+                                <td>
+                                    Customer classified as making a purchase
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TRAIN TEST SPLIT -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Train / Test Split
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <div class="number-card">
+
+                        <div class="number">
+                            80%
+                        </div>
+
+                        <h3>
+                            Training Data
+                        </h3>
+
+                        <p>
+                            {{ train_records }} records
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="number-card">
+
+                        <div class="number">
+                            20%
+                        </div>
+
+                        <h3>
+                            Testing Data
+                        </h3>
+
+                        <p>
+                            {{ test_records }} records
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MODEL PROCESS -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Model Process
+            </h2>
+
+            <div class="row align-items-center g-2">
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            CSV Dataset
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="col-auto process-arrow">
+                    →
+                </div>
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            Pandas
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="col-auto process-arrow">
+                    →
+                </div>
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            X and y
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="col-auto process-arrow">
+                    →
+                </div>
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            80 / 20 Split
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row align-items-center g-2 mt-3">
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            Model Training
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="col-auto process-arrow">
+                    →
+                </div>
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            Predictions
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="col-auto process-arrow">
+                    →
+                </div>
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            Evaluation
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="col-auto process-arrow">
+                    →
+                </div>
+
+                <div class="col">
+
+                    <div class="process-card">
+                        <strong>
+                            New Classifications
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- VISUALIZATION -->
+
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Data Visualization
+            </h2>
+
+            <p style="color: var(--muted);">
+
+                The graph represents the observations according to the number
+                of monthly web visits and their classification label.
+
+            </p>
+
+            <div class="graph-card">
+
+                <img
+                    src="data:image/png;base64,{{ plot_image }}"
+                    alt="Customer classification by monthly web visits">
+
+            </div>
+
+        </div>
+
+
+        <!-- CLASSIFICATION FORM -->
+
+        <div class="mb-3">
+
+            <h2 class="section-title">
+                Binary Classification Form
+            </h2>
+
+            <div class="form-card">
+
+                <p style="color: var(--muted);">
+
+                    Enter the number of monthly website visits for a new
+                    customer. The trained Logistic Regression model will
+                    generate the classification.
+
+                </p>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('logistic_application') }}">
+
+                    <div class="mb-3">
+
+                        <label
+                            for="visitas_web_mes"
+                            class="form-label">
+
+                            Monthly Web Visits
+
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="visitas_web_mes"
+                            name="visitas_web_mes"
+                            min="{{ min_visits }}"
+                            max="{{ max_visits }}"
+                            step="1"
+                            value="{{ visits_input if visits_input else '' }}"
+                            required>
+
+                        <div class="form-text">
+
+                            Valid dataset range:
+                            {{ min_visits }} to {{ max_visits }} visits.
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-classify">
+
+                        Classify Customer
+
+                    </button>
+
+                </form>
+
+
+                {% if error %}
+
+                <div class="error-card">
+
+                    {{ error }}
+
+                </div>
+
+                {% endif %}
+
+
+                {% if prediction_label %}
+
+                <div class="result-card">
+
+                    <p
+                        class="text-uppercase small mb-2"
+                        style="color: var(--muted);">
+
+                        Classification Result
+
+                    </p>
+
+                    <h3>
+                        Class {{ prediction_class }}
+                        — {{ prediction_label }}
+                    </h3>
+
+                    <p>
+                        {{ explanation }}
+                    </p>
+
+                    <hr style="border-color: var(--line);">
+
+                    <p class="mb-0">
+
+                        Probability of belonging to the
+                        <strong>Purchase</strong> class:
+
+                        <strong>
+                            {{ purchase_probability }}%
+                        </strong>
+
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
