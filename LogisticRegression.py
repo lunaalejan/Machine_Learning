@@ -12,6 +12,14 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score
+)
+
 
 # ---------------------------------------------------
 # DATASET
@@ -32,10 +40,8 @@ df = pd.read_csv(DATA_PATH)
 # VARIABLES
 # ---------------------------------------------------
 
-# Independent variable
 X = df[["visitas_web_mes"]]
 
-# Target variable
 y = df["target"]
 
 
@@ -75,6 +81,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 train_records = len(X_train)
+
 test_records = len(X_test)
 
 
@@ -100,6 +107,43 @@ y_pred = logistic_model.predict(
 
 
 # ---------------------------------------------------
+# EVALUATION METRICS
+# ---------------------------------------------------
+
+matrix = confusion_matrix(
+    y_test,
+    y_pred,
+    labels=[0, 1]
+)
+
+tn, fp, fn, tp = matrix.ravel()
+
+
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
+
+precision = precision_score(
+    y_test,
+    y_pred,
+    zero_division=0
+)
+
+recall = recall_score(
+    y_test,
+    y_pred,
+    zero_division=0
+)
+
+f1 = f1_score(
+    y_test,
+    y_pred,
+    zero_division=0
+)
+
+
+# ---------------------------------------------------
 # DATA VISUALIZATION
 # ---------------------------------------------------
 
@@ -118,8 +162,6 @@ def create_plot():
     ].copy()
 
 
-    # Small visual offsets prevent observations
-    # with the same values from completely overlapping.
     class_0_y = []
 
     for position, _ in enumerate(
@@ -150,7 +192,6 @@ def create_plot():
         )
 
 
-    # CLASS 0
     ax.scatter(
         class_0["visitas_web_mes"],
         class_0_y,
@@ -160,7 +201,6 @@ def create_plot():
     )
 
 
-    # CLASS 1
     ax.scatter(
         class_1["visitas_web_mes"],
         class_1_y,
@@ -170,10 +210,7 @@ def create_plot():
     )
 
 
-    # ---------------------------------------------------
-    # LOGISTIC PROBABILITY CURVE
-    # ---------------------------------------------------
-
+    # Logistic probability curve
     visit_values = []
 
     probability_values = []
@@ -217,7 +254,6 @@ def create_plot():
     )
 
 
-    # CLASSIFICATION THRESHOLD
     ax.axhline(
         y=0.5,
         linestyle="--",
@@ -225,10 +261,6 @@ def create_plot():
         label="Classification Threshold (0.50)"
     )
 
-
-    # ---------------------------------------------------
-    # GRAPH DESIGN
-    # ---------------------------------------------------
 
     ax.set_title(
         "Customer Classification by Monthly Web Visits",
@@ -280,10 +312,6 @@ def create_plot():
 
     plt.tight_layout()
 
-
-    # ---------------------------------------------------
-    # CONVERT GRAPH TO BASE64
-    # ---------------------------------------------------
 
     image = io.BytesIO()
 
