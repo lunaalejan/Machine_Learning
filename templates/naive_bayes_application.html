@@ -1,0 +1,835 @@
+{% extends "base.html" %}
+
+{% block title %}Naive Bayes{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .concepts-page {
+        padding: 4rem 0;
+    }
+
+    .page-title {
+        font-family: 'Fraunces', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: var(--muted);
+        max-width: 750px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        margin-bottom: 1rem;
+    }
+
+    .concept-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .concept-card h3 {
+        color: var(--teal);
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .concept-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .class-box {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1.3rem;
+        text-align: center;
+    }
+
+    .class-number {
+        font-family: 'Fraunces', serif;
+        font-size: 2rem;
+        color: var(--ochre);
+        margin-bottom: .3rem;
+    }
+
+    .comparison-table {
+        background: var(--card);
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+
+    .comparison-table table {
+        margin-bottom: 0;
+    }
+
+    .comparison-table th {
+        background: var(--bg-2);
+        color: var(--teal);
+        border-color: var(--line);
+    }
+
+    .comparison-table td {
+        background: var(--card);
+        color: var(--ink);
+        border-color: var(--line);
+    }
+
+    .highlight-box {
+        background: var(--bg-2);
+        border-left: 4px solid var(--ochre);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .highlight-box p {
+        color: var(--muted);
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .classification-form {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 2rem;
+    }
+
+    .classification-form label {
+        color: var(--teal);
+        font-weight: 600;
+        margin-bottom: .5rem;
+    }
+
+    .classification-form .form-control,
+    .classification-form .form-select {
+        background: var(--bg-2);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: .75rem;
+    }
+
+    .classification-form .form-control:focus,
+    .classification-form .form-select:focus {
+        border-color: var(--ochre);
+        box-shadow: none;
+    }
+
+    .btn-naive {
+        background: var(--teal);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: .75rem 1.5rem;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .btn-naive:hover {
+        background: var(--ochre);
+        color: white;
+    }
+
+    .result-box {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--teal);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .result-box h3 {
+        color: var(--teal);
+        font-family: 'Fraunces', serif;
+        margin-bottom: 1rem;
+    }
+
+    .prediction {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--ochre);
+    }
+
+    .probability {
+        color: var(--muted);
+        margin-bottom: 0;
+    }
+
+    .process-step {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        height: 100%;
+    }
+
+    .process-step strong {
+        color: var(--teal);
+    }
+
+</style>
+
+
+<div class="container concepts-page">
+
+    <!-- HEADER -->
+
+    <div class="mb-5">
+
+        <h1 class="page-title">
+            Naive Bayes Classification
+        </h1>
+
+        <p class="page-subtitle">
+            A Machine Learning model used to classify customers
+            and predict their behavior based on different
+            characteristics.
+        </p>
+
+    </div>
+
+
+    <!-- 1. PROBLEM CONTEXT -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            1. Problem Context
+        </h2>
+
+        <div class="concept-card">
+
+            <h3>Customer Behavior Prediction</h3>
+
+            <p>
+                The company wants to predict customer behavior
+                using information related to their characteristics
+                and activity on the website.
+            </p>
+
+            <p class="mt-3">
+                For this purpose, a
+                <strong>Gaussian Naive Bayes</strong>
+                classification model is used to analyze different
+                variables and determine the class of a new customer.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 2. DATASET INFORMATION -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            2. Dataset Information
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>Customer Dataset</h3>
+
+                    <p>
+                        The dataset contains information about
+                        customers and their interactions with a website.
+                    </p>
+
+                    <ul class="mt-3">
+
+                        <li>
+                            <strong>edad:</strong>
+                            Customer's age.
+                        </li>
+
+                        <li>
+                            <strong>visitas_web_mes:</strong>
+                            Number of website visits per month.
+                        </li>
+
+                        <li>
+                            <strong>tiempo_sitio_min:</strong>
+                            Time spent by the customer on the website.
+                        </li>
+
+                        <li>
+                            <strong>descuento_usado:</strong>
+                            Indicates whether the customer used a discount.
+                        </li>
+
+                        <li>
+                            <strong>target:</strong>
+                            Variable representing the class to predict.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>Independent Variables</h3>
+
+                    <p>
+                        The variables used by the model to perform
+                        the classification are:
+                    </p>
+
+                    <div class="mt-3">
+
+                        <span class="badge bg-secondary m-1">
+                            edad
+                        </span>
+
+                        <span class="badge bg-secondary m-1">
+                            visitas_web_mes
+                        </span>
+
+                        <span class="badge bg-secondary m-1">
+                            tiempo_sitio_min
+                        </span>
+
+                        <span class="badge bg-secondary m-1">
+                            descuento_usado
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 3. TARGET VARIABLE -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            3. Target Variable
+        </h2>
+
+        <div class="concept-card">
+
+            <h3>Target</h3>
+
+            <p>
+                The <strong>target</strong> variable represents
+                the result that the model must predict for each customer.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 4. CLASSES -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            4. Classes
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="class-box">
+
+                    <div class="class-number">
+                        0
+                    </div>
+
+                    <h3>
+                        No Purchase
+                    </h3>
+
+                    <p>
+                        The customer does not make a purchase.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="class-box">
+
+                    <div class="class-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Purchase
+                    </h3>
+
+                    <p>
+                        The customer makes a purchase.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 5. TRAIN TEST SPLIT -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            5. Train / Test Split
+        </h2>
+
+        <div class="comparison-table">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Dataset
+                        </th>
+
+                        <th>
+                            Percentage
+                        </th>
+
+                        <th>
+                            Purpose
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            Training
+                        </td>
+
+                        <td>
+                            80%
+                        </td>
+
+                        <td>
+                            Train the model
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Testing
+                        </td>
+
+                        <td>
+                            20%
+                        </td>
+
+                        <td>
+                            Evaluate the model
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- 6. MODEL PROCESS -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            6. Model Process
+        </h2>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+
+                <div class="process-step">
+
+                    <strong>
+                        1. Dataset
+                    </strong>
+
+                    <p class="mt-2 mb-0">
+                        Load the customer data.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="process-step">
+
+                    <strong>
+                        2. Preparation
+                    </strong>
+
+                    <p class="mt-2 mb-0">
+                        Select the independent variables and target.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="process-step">
+
+                    <strong>
+                        3. Train/Test
+                    </strong>
+
+                    <p class="mt-2 mb-0">
+                        Split the data into training and testing sets.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="process-step">
+
+                    <strong>
+                        4. GaussianNB
+                    </strong>
+
+                    <p class="mt-2 mb-0">
+                        Train the Naive Bayes model.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="process-step">
+
+                    <strong>
+                        5. Prediction
+                    </strong>
+
+                    <p class="mt-2 mb-0">
+                        Make predictions for new customers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="process-step">
+
+                    <strong>
+                        6. Evaluation
+                    </strong>
+
+                    <p class="mt-2 mb-0">
+                        Analyze the obtained results.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="highlight-box">
+
+            <p>
+
+                <strong>
+                    Dataset → Data Preparation → Train/Test Split →
+                    Gaussian Naive Bayes → Prediction → Evaluation
+                </strong>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 7. DATA VISUALIZATION -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            7. Data Visualization
+        </h2>
+
+        <div class="concept-card">
+
+            <h3>
+                Understanding the Data
+            </h3>
+
+            <p>
+                Data visualization helps identify patterns,
+                relationships, and differences between customer
+                variables. It also helps understand how the
+                different classes are distributed in the dataset.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 8. CLASSIFICATION FORM -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            8. Classification Form
+        </h2>
+
+        <div class="classification-form">
+
+            <p class="mb-4">
+
+                Enter the customer's information to generate
+                a prediction using the Gaussian Naive Bayes model.
+
+            </p>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('naive_bayes_application') }}"
+            >
+
+                <div class="row g-4">
+
+
+                    <div class="col-md-6">
+
+                        <label for="edad">
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            name="edad"
+                            id="edad"
+                            class="form-control"
+                            placeholder="Enter customer's age"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label for="visitas_web_mes">
+                            Monthly Web Visits
+                        </label>
+
+                        <input
+                            type="number"
+                            name="visitas_web_mes"
+                            id="visitas_web_mes"
+                            class="form-control"
+                            placeholder="Enter monthly visits"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label for="tiempo_sitio_min">
+                            Time on Website (minutes)
+                        </label>
+
+                        <input
+                            type="number"
+                            step="0.1"
+                            name="tiempo_sitio_min"
+                            id="tiempo_sitio_min"
+                            class="form-control"
+                            placeholder="Enter time in minutes"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label for="descuento_usado">
+                            Discount Used
+                        </label>
+
+                        <select
+                            name="descuento_usado"
+                            id="descuento_usado"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-4">
+
+                    <button
+                        type="submit"
+                        class="btn-naive"
+                    >
+                        Classify Customer
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- 9. PREDICTION RESULT -->
+
+    <section class="mb-5">
+
+        <h2 class="section-title">
+            9. Prediction Result
+        </h2>
+
+
+        {% if prediction_label is not none %}
+
+            <div class="result-box">
+
+                <h3>
+                    Classification Result
+                </h3>
+
+
+                <p>
+
+                    Predicted Class:
+
+                    <span class="prediction">
+                        {{ prediction_label }}
+                    </span>
+
+                </p>
+
+
+                {% if purchase_probability is not none %}
+
+                    <p class="probability">
+
+                        Purchase Probability:
+
+                        <strong>
+                            {{ purchase_probability }}%
+                        </strong>
+
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="highlight-box">
+
+                <p>
+                    Enter the customer's information above
+                    to generate a prediction.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+</div>
+
+{% endblock %}

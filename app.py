@@ -30,6 +30,7 @@ from LogisticRegression import (
     recall,
     f1
 )
+from NaiveBayes import predict_customer
 
 
 app = Flask(__name__)
@@ -327,12 +328,60 @@ def logistic_metrics():
 #----------------------------------------------------
 
 @app.route(
-    "/navie-bayes/concepts"
+    "/naive-bayes/concepts"
 )
-def navie_bayes_concepts():
+def naive_bayes_concepts():
 
     return render_template(
-        "navie_bayes_concepts.html"
+        "naive_bayes_concepts.html"
+    )
+
+#---------------------------------------------------
+#NAVI BAYES APPLICATION 
+#----------------------------------------------------
+
+@app.route(
+    "/naive-bayes/application",
+    methods=["GET", "POST"]
+)
+def naive_bayes_application():
+
+    prediction_class = None
+    prediction_label = None
+    purchase_probability = None
+    error = None
+
+    if request.method == "POST":
+
+        try:
+            age = float(request.form["edad"])
+            visits = float(request.form["visitas_web_mes"])
+            time_on_site = float(request.form["tiempo_sitio_min"])
+            discount = int(request.form["descuento_usado"])
+
+            prediction_class, probability = predict_customer(
+                age,
+                visits,
+                time_on_site,
+                discount
+            )
+
+            purchase_probability = f"{probability * 100:.2f}"
+
+            if prediction_class == 1:
+                prediction_label = "Purchase"
+            else:
+                prediction_label = "No Purchase"
+
+        except (ValueError, TypeError) as e:
+            error = str(e)
+
+    return render_template(
+        "naive_bayes_application.html",
+        prediction_class=prediction_class,
+        prediction_label=prediction_label,
+        purchase_probability=purchase_probability,
+        error=error
     )
 
 # ---------------------------------------------------
