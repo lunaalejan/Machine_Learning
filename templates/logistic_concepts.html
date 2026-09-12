@@ -1,0 +1,553 @@
+{% extends "base.html" %}
+
+{% block title %}
+Logistic Regression | Data with Roots
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .concepts-page {
+        padding: 4rem 0;
+    }
+
+    .page-title {
+        font-family: 'Fraunces', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: var(--muted);
+        max-width: 750px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        margin-bottom: 1rem;
+    }
+
+    .concept-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .concept-card h3 {
+        color: var(--teal);
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .concept-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .class-box {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1.3rem;
+        text-align: center;
+    }
+
+    .class-number {
+        font-family: 'Fraunces', serif;
+        font-size: 2rem;
+        color: var(--ochre);
+        margin-bottom: .3rem;
+    }
+
+    .comparison-table {
+        background: var(--card);
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+
+    .comparison-table table {
+        margin-bottom: 0;
+    }
+
+    .comparison-table th {
+        background: var(--bg-2);
+        color: var(--teal);
+        border-color: var(--line);
+    }
+
+    .comparison-table td {
+        background: var(--card);
+        color: var(--ink);
+        border-color: var(--line);
+    }
+
+    .highlight-box {
+        background: var(--bg-2);
+        border-left: 4px solid var(--ochre);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .highlight-box p {
+        color: var(--muted);
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="concepts-page">
+
+    <div class="container">
+
+        <!-- PAGE HEADER -->
+        <div class="mb-5">
+
+            <p class="text-uppercase small mb-2" style="color: var(--teal);">
+                Supervised Learning
+            </p>
+
+            <h1 class="page-title">
+                Logistic Regression
+            </h1>
+
+            <p class="page-subtitle">
+
+                Logistic Regression is a supervised machine learning algorithm
+                used to solve classification problems. It estimates the
+                probability that an observation belongs to one of two possible
+                classes.
+
+            </p>
+
+        </div>
+
+
+        <!-- WHAT IS LOGISTIC REGRESSION -->
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                What is Logistic Regression?
+            </h2>
+
+            <div class="concept-card">
+
+                <p>
+
+                    Logistic Regression is a statistical and machine learning
+                    method used mainly for classification. Instead of predicting
+                    a continuous numerical value, the model calculates the
+                    probability that an observation belongs to a specific class.
+
+                    The predicted probability is converted into a classification
+                    using a decision threshold.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONCEPT CARDS -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>
+                        Why is it a Classification Algorithm?
+                    </h3>
+
+                    <p>
+
+                        Although its name includes the word "regression",
+                        Logistic Regression is considered a classification
+                        algorithm because its final result is a class or label.
+
+                        The model first estimates a probability between 0 and 1
+                        and then assigns the observation to one of the available
+                        classes.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>
+                        Binary Classification
+                    </h3>
+
+                    <p>
+
+                        Binary classification is a problem in which the target
+                        variable contains only two possible classes.
+
+                        Examples include yes or no, approved or rejected,
+                        low risk or high risk, and purchase or no purchase.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>
+                        Independent Variable
+                    </h3>
+
+                    <p>
+
+                        The independent variable is the input used by the model
+                        to make a classification.
+
+                        In this project, the Logistic Regression model uses
+                        <strong>monthly web visits</strong>
+                        as the independent variable.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>
+                        Target Variable
+                    </h3>
+
+                    <p>
+
+                        The target variable is the value that the model attempts
+                        to predict.
+
+                        In this implementation, the target variable is
+                        <strong>target</strong>, which represents the customer's
+                        purchase classification.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>
+                        Classes or Labels
+                    </h3>
+
+                    <p>
+
+                        Classes are the possible categories that can be predicted
+                        by the classification model.
+
+                        This project works with two classes:
+                        Class 0 and Class 1.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="concept-card">
+
+                    <h3>
+                        Probability
+                    </h3>
+
+                    <p>
+
+                        Logistic Regression calculates the probability that an
+                        observation belongs to a particular class.
+
+                        The probability ranges from 0 to 1. A value closer to 1
+                        indicates a greater probability of belonging to the
+                        positive class.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CLASSES -->
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Binary Classes Used in the Project
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <div class="class-box">
+
+                        <div class="class-number">
+                            0
+                        </div>
+
+                        <strong>
+                            No Purchase
+                        </strong>
+
+                        <p class="mt-2 mb-0" style="color: var(--muted);">
+
+                            The customer is classified as not making a purchase.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="class-box">
+
+                        <div class="class-number">
+                            1
+                        </div>
+
+                        <strong>
+                            Purchase
+                        </strong>
+
+                        <p class="mt-2 mb-0" style="color: var(--muted);">
+
+                            The customer is classified as making a purchase.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- THRESHOLD -->
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Classification Threshold
+            </h2>
+
+            <div class="concept-card">
+
+                <p>
+
+                    A classification threshold determines how the probability
+                    generated by the model is converted into a class.
+
+                    A common threshold is 0.50.
+
+                </p>
+
+                <div class="highlight-box">
+
+                    <p>
+
+                        Probability below 0.50 → Class 0
+
+                        <br>
+
+                        Probability equal to or greater than 0.50 → Class 1
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPARISON -->
+        <div class="mb-5">
+
+            <h2 class="section-title">
+                Linear Regression vs Logistic Regression
+            </h2>
+
+            <div class="comparison-table">
+
+                <div class="table-responsive">
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Characteristic
+                                </th>
+
+                                <th>
+                                    Linear Regression
+                                </th>
+
+                                <th>
+                                    Logistic Regression
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Main purpose
+                                </td>
+
+                                <td>
+                                    Predict numerical values
+                                </td>
+
+                                <td>
+                                    Predict categories or classes
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    Output
+                                </td>
+
+                                <td>
+                                    Continuous value
+                                </td>
+
+                                <td>
+                                    Probability and class
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    Example
+                                </td>
+
+                                <td>
+                                    Predict a product price
+                                </td>
+
+                                <td>
+                                    Predict purchase or no purchase
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    Type of problem
+                                </td>
+
+                                <td>
+                                    Regression
+                                </td>
+
+                                <td>
+                                    Classification
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECT CONTEXT -->
+        <div>
+
+            <h2 class="section-title">
+                Logistic Regression in This Project
+            </h2>
+
+            <div class="concept-card">
+
+                <p>
+
+                    The model will analyze the number of monthly visits made by
+                    a customer to a website and use that information to classify
+                    the customer into one of two possible categories:
+                    No Purchase or Purchase.
+
+                    This implementation will use a dataset loaded from a CSV
+                    file with Pandas and a Logistic Regression model implemented
+                    with scikit-learn.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
