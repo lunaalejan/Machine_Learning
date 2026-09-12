@@ -11,35 +11,53 @@ from LinealRegression import (
     r2
 )
 
+
 app = Flask(__name__)
 
+
+# HOME
 @app.route("/")
 def home():
     return render_template("home.html")
 
+
+# TYPES OF MACHINE LEARNING
+@app.route("/types-of-machine-learning")
+def types_machine_learning():
+    return render_template("types_machine_learning.html")
+
+
+# USE CASES
 @app.route("/use-case-1")
 def use_case_1():
     return render_template("use_case_1.html")
+
 
 @app.route("/use-case-2")
 def use_case_2():
     return render_template("use_case_2.html")
 
+
 @app.route("/use-case-3")
 def use_case_3():
     return render_template("use_case_3.html")
+
 
 @app.route("/use-case-4")
 def use_case_4():
     return render_template("use_case_4.html")
 
+
+# LINEAR REGRESSION
 @app.route("/LinealRegression")
 def Lineal():
     return render_template("LinealRegression.html")
 
+
 @app.route("/aplication")
 def appli():
     return render_template("aplication.html")
+
 
 @app.route("/model", methods=["GET", "POST"])
 def md():
@@ -88,6 +106,13 @@ def md():
             else None
         )
     )
+
+
+# LOGISTIC REGRESSION
+@app.route("/logistic-regression/concepts")
+def logistic_concepts():
+    return render_template("logistic_concepts.html")
+
 
 if __name__ == "__main__":
     app.run(
