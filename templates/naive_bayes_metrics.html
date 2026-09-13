@@ -1,0 +1,616 @@
+{% extends "base.html" %}
+
+{% block title %}
+Naive Bayes | Evaluation Metrics
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .metrics-page {
+        padding: 4rem 0;
+    }
+
+    .page-title {
+        font-family: 'Fraunces', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: var(--muted);
+        max-width: 750px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-family: 'Fraunces', serif;
+        color: var(--ochre);
+        margin-bottom: 1rem;
+    }
+
+    .section-text {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Metric Cards */
+    .metric-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+        text-align: center;
+    }
+
+    .metric-card h3 {
+        color: var(--teal);
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .metric-value {
+        font-family: 'Fraunces', serif;
+        font-size: 2.4rem;
+        font-weight: 600;
+        color: var(--ochre);
+        margin-bottom: .5rem;
+    }
+
+    .metric-card p {
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    /* Confusion Matrix */
+    .comparison-table {
+        background: var(--card);
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+
+    .comparison-table table {
+        margin-bottom: 0;
+    }
+
+    .comparison-table th {
+        background: var(--bg-2);
+        color: var(--teal);
+        border-color: var(--line);
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .comparison-table td {
+        background: var(--card);
+        color: var(--ink);
+        border-color: var(--line);
+        text-align: center;
+        padding: 1rem;
+    }
+
+    /* TP TN FP FN Cards */
+    .confusion-card {
+        min-height: 230px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .confusion-card h3 {
+        color: var(--teal);
+        font-size: 1.2rem;
+        margin-top: .5rem;
+        margin-bottom: .7rem;
+        min-height: 30px;
+    }
+
+    .confusion-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-top: .5rem;
+        margin-bottom: 0;
+    }
+
+    .class-number {
+        font-family: 'Fraunces', serif;
+        font-size: 2rem;
+        color: var(--ochre);
+        margin-bottom: .3rem;
+    }
+
+    /* Process Cards */
+    .process-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .process-card h3 {
+        color: var(--teal);
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .process-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    /* Highlight */
+    .highlight-box {
+        background: var(--bg-2);
+        border-left: 4px solid var(--ochre);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .highlight-box p {
+        color: var(--muted);
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    /* Variables */
+    .variable-list {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+    }
+
+    .variable-list ul {
+        margin-bottom: 0;
+        padding-left: 1.2rem;
+    }
+
+    .variable-list li {
+        color: var(--muted);
+        margin-bottom: .6rem;
+    }
+
+    .variable-list li:last-child {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container metrics-page">
+
+    <!-- Header -->
+    <section>
+        <h1 class="page-title">
+            Naive Bayes Evaluation Metrics
+        </h1>
+
+        <p class="page-subtitle">
+            The evaluation metrics allow us to measure how well the
+            Naive Bayes classification model performs when predicting
+            whether a customer will make a purchase.
+        </p>
+    </section>
+
+
+    <!-- Metrics -->
+    <section class="mt-5">
+
+        <h2 class="section-title">
+            Model Performance
+        </h2>
+
+        <p class="section-text">
+            The following metrics are calculated using the test data,
+            corresponding to 20% of the dataset.
+        </p>
+
+        <div class="row g-4">
+
+            <!-- Accuracy -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+
+                    <h3>Accuracy</h3>
+
+                    <div class="metric-value">
+                        {{ metrics.accuracy }}%
+                    </div>
+
+                    <p>
+                        Measures the percentage of predictions
+                        that were correctly classified.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Precision -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+
+                    <h3>Precision</h3>
+
+                    <div class="metric-value">
+                        {{ metrics.precision }}%
+                    </div>
+
+                    <p>
+                        Measures how many of the customers
+                        predicted as purchases were actually purchases.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Recall -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+
+                    <h3>Recall</h3>
+
+                    <div class="metric-value">
+                        {{ metrics.recall }}%
+                    </div>
+
+                    <p>
+                        Measures how many actual purchases
+                        were correctly identified by the model.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- F1 Score -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+
+                    <h3>F1-Score</h3>
+
+                    <div class="metric-value">
+                        {{ metrics.f1_score }}%
+                    </div>
+
+                    <p>
+                        Combines Precision and Recall into
+                        a single performance measure.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Confusion Matrix -->
+    <section class="mt-5">
+
+        <h2 class="section-title">
+            Confusion Matrix
+        </h2>
+
+        <p class="section-text">
+            The confusion matrix shows the relationship between
+            the actual classes and the predictions made by the
+            Naive Bayes model.
+        </p>
+
+
+        <div class="comparison-table">
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Predicted: No Purchase</th>
+                        <th>Predicted: Purchase</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <th>
+                            Actual: No Purchase
+                        </th>
+
+                        <td>
+                            {{ metrics.confusion_matrix[0][0] }}
+                        </td>
+
+                        <td>
+                            {{ metrics.confusion_matrix[0][1] }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Actual: Purchase
+                        </th>
+
+                        <td>
+                            {{ metrics.confusion_matrix[1][0] }}
+                        </td>
+
+                        <td>
+                            {{ metrics.confusion_matrix[1][1] }}
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- TP TN FP FN -->
+    <section class="mt-5">
+
+        <h2 class="section-title">
+            Confusion Matrix Interpretation
+        </h2>
+
+        <p class="section-text">
+            Each value of the confusion matrix represents a different
+            type of prediction made by the classification model.
+        </p>
+
+
+        <div class="row g-4 mt-2">
+
+            <!-- True Positive -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="concept-card confusion-card">
+
+                    <div class="class-number">
+                        TP
+                    </div>
+
+                    <h3>
+                        True Positive
+                    </h3>
+
+                    <p>
+                        The model correctly predicts that a customer
+                        belongs to class 1 (Purchase).
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- True Negative -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="concept-card confusion-card">
+
+                    <div class="class-number">
+                        TN
+                    </div>
+
+                    <h3>
+                        True Negative
+                    </h3>
+
+                    <p>
+                        The model correctly predicts that a customer
+                        belongs to class 0 (No Purchase).
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- False Positive -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="concept-card confusion-card">
+
+                    <div class="class-number">
+                        FP
+                    </div>
+
+                    <h3>
+                        False Positive
+                    </h3>
+
+                    <p>
+                        The model predicts Purchase, but the actual
+                        class is No Purchase.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- False Negative -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="concept-card confusion-card">
+
+                    <div class="class-number">
+                        FN
+                    </div>
+
+                    <h3>
+                        False Negative
+                    </h3>
+
+                    <p>
+                        The model predicts No Purchase, but the actual
+                        class is Purchase.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Model Process -->
+    <section class="mt-5">
+
+        <h2 class="section-title">
+            Model Evaluation Process
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Step 1 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="process-card">
+
+                    <h3>
+                        01. Dataset
+                    </h3>
+
+                    <p>
+                        The dataset contains information about
+                        customers and their purchasing behavior.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="process-card">
+
+                    <h3>
+                        02. Train/Test Split
+                    </h3>
+
+                    <p>
+                        The data is divided into 80% for training
+                        and 20% for testing the model.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="process-card">
+
+                    <h3>
+                        03. Naive Bayes
+                    </h3>
+
+                    <p>
+                        Gaussian Naive Bayes is trained using
+                        the selected independent variables.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Step 4 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="process-card">
+
+                    <h3>
+                        04. Evaluation
+                    </h3>
+
+                    <p>
+                        The model is evaluated using Accuracy,
+                        Precision, Recall, F1-Score and the
+                        Confusion Matrix.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Variables -->
+    <section class="mt-5">
+
+        <h2 class="section-title">
+            Variables Used
+        </h2>
+
+        <div class="variable-list">
+
+            <ul>
+
+                <li>
+                    <strong>edad:</strong>
+                    Customer age.
+                </li>
+
+                <li>
+                    <strong>visitas_web_mes:</strong>
+                    Number of website visits per month.
+                </li>
+
+                <li>
+                    <strong>tiempo_sitio_min:</strong>
+                    Time spent on the website in minutes.
+                </li>
+
+                <li>
+                    <strong>descuento_usado:</strong>
+                    Indicates whether the customer used a discount.
+                </li>
+
+                <li>
+                    <strong>target:</strong>
+                    Purchase classification:
+                    0 = No Purchase, 1 = Purchase.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+
+    <!-- Interpretation -->
+    <section class="mt-5">
+
+        <div class="highlight-box">
+
+            <p>
+                The evaluation metrics provide an overview of the
+                Naive Bayes model's ability to classify customers.
+                Accuracy shows the general performance, while
+                Precision and Recall provide more specific information
+                about the positive class. The F1-Score combines both
+                Precision and Recall to provide a balanced measure.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
