@@ -614,31 +614,62 @@
 
     </section>
 
+<!-- 7. DATA VISUALIZATION -->
+<section class="mb-5">
 
-    <!-- 7. DATA VISUALIZATION -->
+    <h2 class="section-title">
+        7. Data Visualization
+    </h2>
 
-    <section class="mb-5">
+    <div class="concept-card">
 
-        <h2 class="section-title">
-            7. Data Visualization
-        </h2>
+        <h3>
+            Understanding the Data
+        </h3>
 
-        <div class="concept-card">
+        <p>
+            Data visualization helps identify patterns,
+            relationships, and differences between customer
+            variables. The following graph shows the
+            relationship between the number of website visits
+            and the time customers spend on the website,
+            separated according to the target class.
+        </p>
 
-            <h3>
-                Understanding the Data
-            </h3>
+        <div class="mt-4 text-center">
+
+            <img
+                src="{{ url_for('naive_bayes_visualization') }}"
+                alt="Website Visits vs Time on Site"
+                class="img-fluid"
+                style="
+                    max-width: 850px;
+                    width: 100%;
+                    border-radius: 12px;
+                    border: 1px solid var(--line);
+                "
+            >
+
+        </div>
+
+        <div class="highlight-box">
 
             <p>
-                Data visualization helps identify patterns,
-                relationships, and differences between customer
-                variables. It also helps understand how the
-                different classes are distributed in the dataset.
+                <strong>Interpretation:</strong>
+                The graph compares website visits and time spent
+                on the website for the two customer classes.
+                This visualization makes it possible to observe
+                whether customers who purchase tend to visit the
+                website more frequently or spend more time on it.
+                These relationships can help identify patterns
+                that the Naive Bayes model can use for classification.
             </p>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
     <!-- 8. CLASSIFICATION FORM -->

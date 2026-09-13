@@ -1,4 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, Response, render_template, request
+from matplotlib import pyplot as plt
+import pandas as pd
+
 
 from LinealRegression import (
     calculatePrice,
@@ -12,6 +15,7 @@ from LinealRegression import (
 )
 
 from LogisticRegression import (
+    DATA_PATH,
     predict_purchase,
     plot_image as logistic_plot_image,
     n_records as logistic_n_records,
@@ -397,6 +401,71 @@ def naive_bayes_metrics():
         "naive_bayes_metrics.html",
         metrics=metrics
     )
+
+@app.route("/naive-bayes/visualization")
+def naive_bayes_visualization():
+
+    import io
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from flask import Response
+
+    df = pd.read_csv(DATA_PATH)
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    # Separar los clientes según la clase
+    no_purchase = df[df["target"] == 0]
+    purchase = df[df["target"] == 1]
+
+    # Graficar clientes que no compraron
+    ax.scatter(
+        no_purchase["visitas_web_mes"],
+        no_purchase["tiempo_sitio_min"],
+        label="No Purchase",
+        alpha=0.7,
+        s=50
+    )
+
+    # Graficar clientes que compraron
+    ax.scatter(
+        purchase["visitas_web_mes"],
+        purchase["tiempo_sitio_min"],
+        label="Purchase",
+        alpha=0.7,
+        s=50
+    )
+
+    ax.set_title("Website Visits vs. Time on Site")
+    ax.set_xlabel("Website Visits per Month")
+    ax.set_ylabel("Time on Site (minutes)")
+
+    ax.legend()
+
+    ax.grid(
+        True,
+        alpha=0.2
+    )
+
+    plt.tight_layout()
+
+    image = io.BytesIO()
+
+    plt.savefig(
+        image,
+        format="png",
+        dpi=100
+    )
+
+    plt.close(fig)
+
+    image.seek(0)
+
+    return Response(
+        image.getvalue(),
+        mimetype="image/png"
+    )
+
 
 # ---------------------------------------------------
 # RUN APPLICATION
