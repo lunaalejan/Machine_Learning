@@ -30,7 +30,7 @@ from LogisticRegression import (
     recall,
     f1
 )
-from NaiveBayes import predict_customer
+from NaiveBayes import get_metrics, predict_customer
 
 
 app = Flask(__name__)
@@ -382,6 +382,20 @@ def naive_bayes_application():
         prediction_label=prediction_label,
         purchase_probability=purchase_probability,
         error=error
+    )
+
+#------------------------------------------------
+#NAIVE BAYES METRICS
+#-----------------------------------------------
+
+@app.route("/naive-bayes/metrics")
+def naive_bayes_metrics():
+
+    metrics = get_metrics()
+
+    return render_template(
+        "naive_bayes_metrics.html",
+        metrics=metrics
     )
 
 # ---------------------------------------------------
