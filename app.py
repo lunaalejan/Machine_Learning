@@ -466,6 +466,17 @@ def naive_bayes_visualization():
         mimetype="image/png"
     )
 
+@app.route('/unsupervised/concepts')
+def unsupervised_concepts():
+    return render_template('unsupervised_concepts.html')
+
+@app.route('/unsupervised/manual-exercise')
+def manual_exercise():
+    return render_template('manual_exercise.html' )
+
+@app.route('/unsupervised/clustering-application')
+def clustering_application():
+    return render_template('clustering_application.html')
 
 # ---------------------------------------------------
 # RUN APPLICATION

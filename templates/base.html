@@ -568,7 +568,93 @@
 
                     </li>
 
+                    <!-- UNSUPERVISED -->
 
+                    <li class="nav-item dropdown">
+
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                            Unsupervised
+
+                        </a>
+
+
+                        <ul class="dropdown-menu">
+
+
+                            <!-- K-MEANS -->
+
+                            <li>
+
+                                <h6 class="dropdown-header">
+
+                                    K-Means Clustering
+
+                                </h6>
+
+                            </li>
+
+
+                            <!--CONCEPTS -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url_for('unsupervised_concepts') }}">
+
+                                    Concepts
+
+                                </a>
+
+                            </li>
+
+
+                            <!--MANUAL EXERCISE -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url_for('manual_exercise') }}">
+
+                                    Manual Exercise
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <hr class="dropdown-divider">
+
+                            </li>
+
+
+                            <!-- CLUSTERING APPLICATION -->
+
+                            <li>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url_for('clustering_application') }}">
+
+                                    Clustering Application
+
+                                </a>
+
+                            </li>
+
+
+                        </ul>
+
+                    </li>   
                 </ul>
 
             </div>
