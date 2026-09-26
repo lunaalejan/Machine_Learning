@@ -656,7 +656,101 @@ def manual_exercise():
 
 @app.route('/unsupervised/clustering-application')
 def clustering_application():
-    return render_template('clustering_application.html')
+
+    import os
+    import pandas as pd
+
+
+    # ---------------------------------------------
+    # PATHS
+    # ---------------------------------------------
+
+    base_dir = os.path.dirname(
+        os.path.abspath(__file__)
+    )
+
+    data_dir = os.path.join(
+        base_dir,
+        "data"
+    )
+
+
+    # ---------------------------------------------
+    # LOAD RESULTS
+    # ---------------------------------------------
+
+    results_df = pd.read_csv(
+        os.path.join(
+            data_dir,
+            "clustering_results.csv"
+        )
+    )
+
+
+    centroids_df = pd.read_csv(
+        os.path.join(
+            data_dir,
+            "clustering_centroids.csv"
+        )
+    )
+
+
+    summary_df = pd.read_csv(
+        os.path.join(
+            data_dir,
+            "clustering_summary.csv"
+        )
+    )
+
+
+    metrics_df = pd.read_csv(
+        os.path.join(
+            data_dir,
+            "clustering_metrics.csv"
+        )
+    )
+
+
+    # Convert tables for HTML
+
+    records = results_df.to_dict(
+        orient="records"
+    )
+
+
+    centroids = centroids_df.to_dict(
+        orient="records"
+    )
+
+
+    summary = summary_df.to_dict(
+        orient="records"
+    )
+
+
+    silhouette_score = round(
+        metrics_df[
+            "SilhouetteScore"
+        ][0],
+        4
+    )
+
+
+    return render_template(
+
+        "clustering_application.html",
+
+        records=records,
+
+        centroids=centroids,
+
+        summary=summary,
+
+        silhouette_score=silhouette_score,
+
+        plot="clustering/clustering_application.png"
+
+    )
 
 # ---------------------------------------------------
 # RUN APPLICATION

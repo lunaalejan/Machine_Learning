@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Clustering Application | Data with Roots
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="container py-5">
+
+
+<!-- HEADER -->
+
+<div class="hero-manual mb-5">
+
+    <h1>
+        K-Means Clustering Application
+    </h1>
+
+    <p>
+        This section presents the implementation of K-Means
+        clustering using the Online Retail dataset. The objective
+        is to identify groups of customers with similar purchasing
+        behavior using machine learning techniques.
+    </p>
+
+</div>
+
+
+
+<!-- DATASET CONTEXT -->
+
+<h2>
+Dataset Context
+</h2>
+
+
+<div class="card bg-dark text-light p-4 mb-4">
+
+<p>
+The dataset used in this application is the Online Retail
+dataset, which contains transactional information from a
+UK-based online retailer.
+</p>
+
+<p>
+Each transaction includes product information, quantity,
+price, customer identification and purchase date.
+</p>
+
+<p>
+For clustering purposes, transactions were transformed into
+customer-level information.
+</p>
+
+
+</div>
+
+
+
+<!-- VARIABLES -->
+
+
+<h2>
+Selected Variables
+</h2>
+
+
+<div class="card bg-dark text-light p-4 mb-4">
+
+
+<ul>
+
+<li>
+<strong>TotalQuantity:</strong>
+Total number of products purchased by each customer.
+</li>
+
+
+<li>
+<strong>TotalSpending:</strong>
+Total monetary value spent by each customer.
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+<!-- PREPROCESSING -->
+
+
+<h2>
+Data Preprocessing
+</h2>
+
+
+<div class="card bg-dark text-light p-4 mb-4">
+
+
+<ol>
+
+<li>
+Removed records without CustomerID.
+</li>
+
+<li>
+Removed duplicated transactions.
+</li>
+
+<li>
+Removed invalid purchases with Quantity or UnitPrice values
+less than or equal to zero.
+</li>
+
+<li>
+Calculated TotalSpending:
+Quantity × UnitPrice.
+</li>
+
+<li>
+Grouped transactions by customer.
+</li>
+
+<li>
+Applied StandardScaler before K-Means.
+</li>
+
+
+</ol>
+
+
+</div>
+
+
+
+<!-- MODEL -->
+
+
+<h2>
+K-Means Configuration
+</h2>
+
+
+<div class="card bg-dark text-light p-4 mb-4">
+
+
+<p>
+The clustering model was implemented using Scikit-learn.
+</p>
+
+
+<ul>
+
+<li>
+Algorithm: K-Means
+</li>
+
+<li>
+Number of clusters: 3
+</li>
+
+<li>
+Initialization: n_init = 10
+</li>
+
+<li>
+Random state: 42
+</li>
+
+<li>
+Scaling method: StandardScaler
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+<!-- SILHOUETTE -->
+
+
+<h2>
+Model Evaluation
+</h2>
+
+
+<div class="card bg-dark text-light p-4 mb-4">
+
+
+<h3>
+
+Silhouette Score:
+
+{{ silhouette_score }}
+
+</h3>
+
+
+<p>
+
+The silhouette score measures how separated the generated
+clusters are. A higher value indicates that observations are
+generally closer to their assigned cluster than to other
+clusters.
+
+</p>
+
+
+</div>
+
+
+
+
+<!-- CENTROIDS -->
+
+
+<h2>
+Cluster Centroids
+</h2>
+
+
+<div class="table-responsive mb-5">
+
+
+<table class="table table-dark">
+
+
+<thead>
+
+<tr>
+
+<th>
+Cluster
+</th>
+
+<th>
+Total Quantity
+</th>
+
+<th>
+Total Spending
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for row in centroids %}
+
+<tr>
+
+<td>
+{{ row.Cluster }}
+</td>
+
+
+<td>
+{{ row.TotalQuantity }}
+</td>
+
+
+<td>
+{{ row.TotalSpending }}
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+<!-- SUMMARY -->
+
+
+<h2>
+Cluster Summary
+</h2>
+
+
+<div class="table-responsive mb-5">
+
+
+<table class="table table-dark">
+
+
+<thead>
+
+<tr>
+
+<th>
+Cluster
+</th>
+
+<th>
+Customers
+</th>
+
+<th>
+Average Quantity
+</th>
+
+<th>
+Average Spending
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for row in summary %}
+
+
+<tr>
+
+
+<td>
+{{ row.Cluster }}
+</td>
+
+
+<td>
+{{ row.Customers }}
+</td>
+
+
+<td>
+{{ row.AverageQuantity }}
+</td>
+
+
+<td>
+{{ row.AverageSpending }}
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+<!-- GRAPH -->
+
+
+<h2>
+Cluster Visualization
+</h2>
+
+
+<div class="text-center mb-5">
+
+
+<img
+src="{{ url_for(
+'static',
+filename=plot
+) }}"
+class="img-fluid rounded"
+alt="K-Means clusters">
+
+
+</div>
+
+
+
+
+
+
+<!-- RECORDS -->
+
+
+<h2>
+Customer Cluster Assignment
+</h2>
+
+
+<div class="table-responsive">
+
+
+<table class="table table-dark table-striped">
+
+
+<thead>
+
+<tr>
+
+<th>
+Customer ID
+</th>
+
+<th>
+Total Quantity
+</th>
+
+<th>
+Total Spending
+</th>
+
+<th>
+Cluster
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+<tbody>
+
+
+{% for row in records %}
+
+
+<tr>
+
+
+<td>
+{{ row.CustomerID }}
+</td>
+
+
+<td>
+{{ row.TotalQuantity }}
+</td>
+
+
+<td>
+{{ row.TotalSpending }}
+</td>
+
+
+<td>
+Cluster {{ row.Cluster }}
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+
+<!-- INTERPRETATION -->
+
+
+<h2 class="mt-5">
+Cluster Interpretation
+</h2>
+
+
+
+<div class="card bg-dark text-light p-4">
+
+
+<p>
+
+<strong>
+Cluster 1:
+</strong>
+
+Represents the majority of customers with lower purchasing
+quantity and spending levels compared with the other groups.
+
+</p>
+
+
+
+<p>
+
+<strong>
+Cluster 2:
+</strong>
+
+Represents a small group of customers with extremely high
+purchase quantities and spending values.
+
+</p>
+
+
+
+<p>
+
+<strong>
+Cluster 3:
+</strong>
+
+Represents high-value customers with important purchasing
+activity, but below the values observed in Cluster 2.
+
+</p>
+
+
+</div>
+
+
+
+
+</div>
+
+
+{% endblock %}
