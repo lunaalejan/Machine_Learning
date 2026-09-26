@@ -1,0 +1,1346 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manual K-Means Exercise | Data with Roots
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .manual-page {
+        padding: 4rem 0;
+    }
+
+    .hero-manual {
+        padding: 3rem;
+        background: linear-gradient(
+            135deg,
+            var(--card),
+            var(--bg-2)
+        );
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        margin-bottom: 3rem;
+    }
+
+    .hero-manual h1 {
+        font-size: 2.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-manual p {
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 900px;
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-subtitle {
+        color: var(--teal);
+        font-family: 'Public Sans', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        font-size: .8rem;
+        font-weight: 600;
+    }
+
+    .info-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.7rem;
+        height: 100%;
+    }
+
+    .info-card h3 {
+        color: var(--ochre);
+        font-size: 1.25rem;
+    }
+
+    .info-card p,
+    .info-card li {
+        color: var(--muted);
+        line-height: 1.7;
+    }
+
+    .formula-box {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .formula {
+        color: var(--ochre);
+        font-family: Georgia, serif;
+        font-size: 1.55rem;
+    }
+
+    .table-container {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-top: 1.5rem;
+    }
+
+    .table-container .table {
+        margin-bottom: 0;
+    }
+
+    .table-container th {
+        background: var(--bg-2);
+        color: var(--ochre);
+        border-color: var(--line);
+        white-space: nowrap;
+    }
+
+    .table-container td {
+        background: var(--card);
+        color: var(--ink);
+        border-color: var(--line);
+        vertical-align: middle;
+    }
+
+    .table-container tbody tr:hover td {
+        background: var(--bg-2);
+    }
+
+    .centroid-card {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1.4rem;
+        text-align: center;
+        height: 100%;
+    }
+
+    .centroid-card h4 {
+        color: var(--teal);
+        font-size: 1rem;
+    }
+
+    .centroid-value {
+        color: var(--ochre);
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+        margin: 0;
+    }
+
+    .iteration-box {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    .iteration-number {
+        display: inline-block;
+        background: var(--teal);
+        color: var(--bg);
+        border-radius: 50px;
+        padding: .4rem 1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .plot-box {
+        background: var(--bg-2);
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        min-height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        overflow: hidden;
+    }
+
+    .plot-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .placeholder-text {
+        color: var(--muted);
+        text-align: center;
+    }
+
+    .cluster-badge {
+        display: inline-block;
+        padding: .25rem .65rem;
+        border-radius: 50px;
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        font-size: .8rem;
+    }
+
+    .analysis-box {
+        background: linear-gradient(
+            135deg,
+            rgba(79, 163, 147, .12),
+            rgba(217, 155, 60, .08)
+        );
+        border-left: 4px solid var(--teal);
+        border-radius: 12px;
+        padding: 1.7rem;
+        margin-top: 1.5rem;
+    }
+
+    .analysis-box p {
+        color: var(--ink);
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .evidence-label {
+        color: var(--muted);
+        font-size: .85rem;
+        margin-top: .7rem;
+        text-align: center;
+    }
+
+    .warning-box {
+        background: var(--bg-2);
+        border: 1px solid var(--ochre);
+        border-radius: 12px;
+        padding: 1.5rem;
+    }
+
+    .warning-box p {
+        margin: 0;
+        color: var(--muted);
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container manual-page">
+
+
+    <!-- ====================================================== -->
+    <!-- HEADER -->
+    <!-- ====================================================== -->
+
+    <section class="hero-manual">
+
+        <div class="section-subtitle">
+            Unsupervised Machine Learning
+        </div>
+
+        <h1>
+            Manual K-Means Simulation
+        </h1>
+
+        <p>
+            This section presents a manual simulation of the K-Means
+            clustering algorithm using 100 records and two numerical
+            variables. Three iterations are performed to demonstrate
+            the calculation of Euclidean distances, cluster
+            assignments, centroid updates, within-cluster variation,
+            and the evolution of the clusters.
+        </p>
+
+    </section>
+
+
+    <!-- ====================================================== -->
+    <!-- 1. DATASET CONTEXT -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        1. Dataset Context
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-lg-7">
+
+            <div class="info-card">
+
+                <h3>
+                    Customer Purchasing Behavior
+                </h3>
+
+                <p>
+                    The manual exercise uses a sample of 100 customer
+                    records obtained from the dataset selected for the
+                    customer segmentation project.
+                </p>
+
+                <p>
+                    The purpose is to identify groups of customers
+                    with similar purchasing behavior using two
+                    numerical characteristics.
+                </p>
+
+                <p>
+                    K-Means is appropriate for this exercise because
+                    the objective is to discover natural groups in
+                    unlabeled numerical data.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-5">
+
+            <div class="info-card">
+
+                <h3>
+                    Exercise Configuration
+                </h3>
+
+                <ul>
+                    <li>Number of records: <strong>100</strong></li>
+                    <li>Numerical variables: <strong>2</strong></li>
+                    <li>Number of clusters: <strong>K = 3</strong></li>
+                    <li>Initial centroids: <strong>3</strong></li>
+                    <li>Manual iterations: <strong>3</strong></li>
+                    <li>Distance measure: <strong>Euclidean</strong></li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- 2. VARIABLES -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        2. Selected Numerical Variables
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <div class="info-card">
+
+                <h3>
+                    X — Total Quantity Purchased
+                </h3>
+
+                <p>
+                    This variable represents the total number of
+                    product units purchased by a customer during the
+                    period represented in the dataset.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <div class="info-card">
+
+                <h3>
+                    Y — Total Spending
+                </h3>
+
+                <p>
+                    This variable represents the total monetary value
+                    of the customer's purchases during the analyzed
+                    period.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- 3. DATASET TABLE -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        3. Dataset — 100 Records
+    </h2>
+
+    <p style="color: var(--muted);">
+        The following table contains the 100 observations selected
+        for the manual K-Means simulation.
+    </p>
+
+
+    {% if records %}
+
+    <div class="table-container table-responsive">
+
+        <table class="table table-hover">
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Customer ID</th>
+                    <th>Total Quantity</th>
+                    <th>Total Spending</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in records %}
+
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row.CustomerID }}</td>
+                    <td>{{ row.TotalQuantity }}</td>
+                    <td>{{ row.TotalSpending }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="warning-box">
+
+        <p>
+            The 100-record dataset will be displayed here after
+            the manual dataset is connected to Flask.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ====================================================== -->
+    <!-- 4. INITIAL CENTROIDS -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        4. Initial Centroids
+    </h2>
+
+    <p style="color: var(--muted);">
+
+        Three initial centroids are selected before starting the
+        first iteration. Each centroid contains one coordinate for
+        each numerical variable.
+
+    </p>
+
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+
+            <div class="centroid-card">
+
+                <h4>
+                    Centroid C1
+                </h4>
+
+                <p class="centroid-value">
+
+                    {% if initial_centroids %}
+                        ({{ initial_centroids[0][0] }},
+                        {{ initial_centroids[0][1] }})
+                    {% else %}
+                        (X1, Y1)
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="centroid-card">
+
+                <h4>
+                    Centroid C2
+                </h4>
+
+                <p class="centroid-value">
+
+                    {% if initial_centroids %}
+                        ({{ initial_centroids[1][0] }},
+                        {{ initial_centroids[1][1] }})
+                    {% else %}
+                        (X2, Y2)
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="centroid-card">
+
+                <h4>
+                    Centroid C3
+                </h4>
+
+                <p class="centroid-value">
+
+                    {% if initial_centroids %}
+                        ({{ initial_centroids[2][0] }},
+                        {{ initial_centroids[2][1] }})
+                    {% else %}
+                        (X3, Y3)
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- 5. INITIAL SCATTER PLOT -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        5. Initial Scatter Plot
+    </h2>
+
+    <p style="color: var(--muted);">
+
+        The initial scatter plot represents the 100 observations
+        together with the three selected initial centroids.
+
+    </p>
+
+
+    <div class="plot-box">
+
+        {% if initial_plot %}
+
+            <img
+                src="{{ url_for('static',
+                filename=initial_plot) }}"
+                alt="Initial K-Means scatter plot">
+
+        {% else %}
+
+            <div class="placeholder-text">
+
+                <strong>Initial Scatter Plot</strong>
+
+                <br><br>
+
+                The plot will appear here after the real
+                exercise results are generated.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <p class="evidence-label">
+        Figure 1. Dataset and initial centroids.
+    </p>
+
+
+    <!-- ====================================================== -->
+    <!-- 6. EUCLIDEAN DISTANCE -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        6. Distance Calculation
+    </h2>
+
+    <p style="color: var(--muted);">
+
+        For every observation, the Euclidean distance to each
+        centroid is calculated. The observation is assigned to
+        the cluster associated with the smallest distance.
+
+    </p>
+
+
+    <div class="formula-box">
+
+        <div class="formula">
+
+            d = √[(x − x<sub>c</sub>)² +
+            (y − y<sub>c</sub>)²]
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- ITERATION 1 -->
+    <!-- ====================================================== -->
+
+    <section class="iteration-box">
+
+        <div class="iteration-number">
+            Iteration 1
+        </div>
+
+        <h2>
+            7. First K-Means Iteration
+        </h2>
+
+        <p style="color: var(--muted);">
+
+            Each record is compared with the three initial
+            centroids. The shortest Euclidean distance determines
+            the cluster assignment.
+
+        </p>
+
+
+        {% if iteration1 %}
+
+        <div class="table-container table-responsive">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+                        <th>Record</th>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>Distance C1</th>
+                        <th>Distance C2</th>
+                        <th>Distance C3</th>
+                        <th>Assigned Cluster</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in iteration1 %}
+
+                    <tr>
+
+                        <td>{{ loop.index }}</td>
+
+                        <td>
+                            {{ row.X }}
+                        </td>
+
+                        <td>
+                            {{ row.Y }}
+                        </td>
+
+                        <td>
+                            {{ row.DistanceC1 }}
+                        </td>
+
+                        <td>
+                            {{ row.DistanceC2 }}
+                        </td>
+
+                        <td>
+                            {{ row.DistanceC3 }}
+                        </td>
+
+                        <td>
+                            <span class="cluster-badge">
+                                Cluster {{ row.Cluster }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="warning-box mt-3">
+
+            <p>
+                Iteration 1 results will be displayed here after
+                the real Euclidean distance calculations are loaded.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <h3 class="mt-4">
+            Updated Centroids — Iteration 1
+        </h3>
+
+
+        <div class="row g-3 mt-1">
+
+            {% if centroids1 %}
+
+                {% for centroid in centroids1 %}
+
+                <div class="col-md-4">
+
+                    <div class="centroid-card">
+
+                        <h4>
+                            C{{ loop.index }}
+                        </h4>
+
+                        <p class="centroid-value">
+                            ({{ centroid[0] }},
+                            {{ centroid[1] }})
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="col-12">
+
+                    <p style="color: var(--muted);">
+                        Updated centroid coordinates pending.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="plot-box">
+
+            {% if iteration1_plot %}
+
+                <img
+                    src="{{ url_for('static',
+                    filename=iteration1_plot) }}"
+                    alt="K-Means iteration 1">
+
+            {% else %}
+
+                <div class="placeholder-text">
+                    Iteration 1 cluster visualization
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <p class="evidence-label">
+            Figure 2. Cluster assignments after Iteration 1.
+        </p>
+
+    </section>
+
+
+    <!-- ====================================================== -->
+    <!-- ITERATION 2 -->
+    <!-- ====================================================== -->
+
+    <section class="iteration-box">
+
+        <div class="iteration-number">
+            Iteration 2
+        </div>
+
+        <h2>
+            8. Second K-Means Iteration
+        </h2>
+
+        <p style="color: var(--muted);">
+
+            The updated centroids from Iteration 1 are used to
+            calculate new distances and reassign the observations.
+
+        </p>
+
+
+        {% if iteration2 %}
+
+        <div class="table-container table-responsive">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+                        <th>Record</th>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>Distance C1</th>
+                        <th>Distance C2</th>
+                        <th>Distance C3</th>
+                        <th>Assigned Cluster</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in iteration2 %}
+
+                    <tr>
+
+                        <td>{{ loop.index }}</td>
+                        <td>{{ row.X }}</td>
+                        <td>{{ row.Y }}</td>
+                        <td>{{ row.DistanceC1 }}</td>
+                        <td>{{ row.DistanceC2 }}</td>
+                        <td>{{ row.DistanceC3 }}</td>
+
+                        <td>
+                            <span class="cluster-badge">
+                                Cluster {{ row.Cluster }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="warning-box mt-3">
+
+            <p>
+                Iteration 2 calculations will be displayed here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <h3 class="mt-4">
+            Updated Centroids — Iteration 2
+        </h3>
+
+
+        <div class="row g-3 mt-1">
+
+            {% if centroids2 %}
+
+                {% for centroid in centroids2 %}
+
+                <div class="col-md-4">
+
+                    <div class="centroid-card">
+
+                        <h4>
+                            C{{ loop.index }}
+                        </h4>
+
+                        <p class="centroid-value">
+                            ({{ centroid[0] }},
+                            {{ centroid[1] }})
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="col-12">
+
+                    <p style="color: var(--muted);">
+                        Updated centroid coordinates pending.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="plot-box">
+
+            {% if iteration2_plot %}
+
+                <img
+                    src="{{ url_for('static',
+                    filename=iteration2_plot) }}"
+                    alt="K-Means iteration 2">
+
+            {% else %}
+
+                <div class="placeholder-text">
+                    Iteration 2 cluster visualization
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <p class="evidence-label">
+            Figure 3. Cluster assignments after Iteration 2.
+        </p>
+
+    </section>
+
+
+    <!-- ====================================================== -->
+    <!-- ITERATION 3 -->
+    <!-- ====================================================== -->
+
+    <section class="iteration-box">
+
+        <div class="iteration-number">
+            Iteration 3
+        </div>
+
+        <h2>
+            9. Third K-Means Iteration
+        </h2>
+
+        <p style="color: var(--muted);">
+
+            The centroids calculated in Iteration 2 are used for
+            the third iteration. The resulting assignments represent
+            the final state of this three-iteration manual
+            simulation.
+
+        </p>
+
+
+        {% if iteration3 %}
+
+        <div class="table-container table-responsive">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+                        <th>Record</th>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>Distance C1</th>
+                        <th>Distance C2</th>
+                        <th>Distance C3</th>
+                        <th>Assigned Cluster</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in iteration3 %}
+
+                    <tr>
+
+                        <td>{{ loop.index }}</td>
+                        <td>{{ row.X }}</td>
+                        <td>{{ row.Y }}</td>
+                        <td>{{ row.DistanceC1 }}</td>
+                        <td>{{ row.DistanceC2 }}</td>
+                        <td>{{ row.DistanceC3 }}</td>
+
+                        <td>
+                            <span class="cluster-badge">
+                                Cluster {{ row.Cluster }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="warning-box mt-3">
+
+            <p>
+                Iteration 3 calculations will be displayed here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <h3 class="mt-4">
+            Final Centroids
+        </h3>
+
+
+        <div class="row g-3 mt-1">
+
+            {% if centroids3 %}
+
+                {% for centroid in centroids3 %}
+
+                <div class="col-md-4">
+
+                    <div class="centroid-card">
+
+                        <h4>
+                            C{{ loop.index }}
+                        </h4>
+
+                        <p class="centroid-value">
+                            ({{ centroid[0] }},
+                            {{ centroid[1] }})
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="col-12">
+
+                    <p style="color: var(--muted);">
+                        Final centroid coordinates pending.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="plot-box">
+
+            {% if iteration3_plot %}
+
+                <img
+                    src="{{ url_for('static',
+                    filename=iteration3_plot) }}"
+                    alt="K-Means iteration 3">
+
+            {% else %}
+
+                <div class="placeholder-text">
+                    Final cluster visualization
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <p class="evidence-label">
+            Figure 4. Final cluster assignments after Iteration 3.
+        </p>
+
+    </section>
+
+
+    <!-- ====================================================== -->
+    <!-- VARIANCE -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        10. Within-Cluster Variance Comparison
+    </h2>
+
+    <p style="color: var(--muted);">
+
+        The within-cluster variation is compared across the three
+        iterations to evaluate how compact the clusters become as
+        the centroids are updated.
+
+    </p>
+
+
+    {% if variance_data %}
+
+    <div class="table-container table-responsive">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+                    <th>Iteration</th>
+                    <th>Cluster 1</th>
+                    <th>Cluster 2</th>
+                    <th>Cluster 3</th>
+                    <th>Total Variation</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in variance_data %}
+
+                <tr>
+
+                    <td>
+                        {{ row.Iteration }}
+                    </td>
+
+                    <td>
+                        {{ row.Cluster1 }}
+                    </td>
+
+                    <td>
+                        {{ row.Cluster2 }}
+                    </td>
+
+                    <td>
+                        {{ row.Cluster3 }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ row.Total }}
+                        </strong>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="warning-box">
+
+        <p>
+            The variance comparison will appear here after the
+            three iterations have been calculated.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="analysis-box">
+
+        <p>
+
+            <strong>Interpretation:</strong>
+
+            {% if variance_interpretation %}
+
+                {{ variance_interpretation }}
+
+            {% else %}
+
+                The final interpretation will compare the
+                within-cluster variation obtained in Iterations 1,
+                2, and 3. The analysis will describe whether the
+                observations became more compact around their
+                assigned centroids as the algorithm progressed.
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- FINAL RESULT -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        11. Final Cluster Interpretation
+    </h2>
+
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="info-card">
+
+                <h3>
+                    Cluster 1
+                </h3>
+
+                <p>
+
+                    {% if cluster1_interpretation %}
+
+                        {{ cluster1_interpretation }}
+
+                    {% else %}
+
+                        The characteristics of Cluster 1 will be
+                        described according to its final centroid
+                        and the purchasing behavior of the
+                        observations assigned to it.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="info-card">
+
+                <h3>
+                    Cluster 2
+                </h3>
+
+                <p>
+
+                    {% if cluster2_interpretation %}
+
+                        {{ cluster2_interpretation }}
+
+                    {% else %}
+
+                        The characteristics of Cluster 2 will be
+                        described after analyzing its final
+                        centroid and assigned observations.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="info-card">
+
+                <h3>
+                    Cluster 3
+                </h3>
+
+                <p>
+
+                    {% if cluster3_interpretation %}
+
+                        {{ cluster3_interpretation }}
+
+                    {% else %}
+
+                        The characteristics of Cluster 3 will be
+                        interpreted from the final results of the
+                        manual simulation.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- CONCLUSION -->
+    <!-- ====================================================== -->
+
+    <h2 class="section-title">
+        12. Manual Exercise Conclusion
+    </h2>
+
+
+    <div class="analysis-box">
+
+        <p>
+
+            {% if manual_conclusion %}
+
+                {{ manual_conclusion }}
+
+            {% else %}
+
+                The manual simulation demonstrates how K-Means
+                progressively reorganizes observations by repeatedly
+                calculating distances, assigning records to their
+                nearest centroid, and updating the centroid
+                coordinates. The three iterations provide evidence
+                of how the cluster structure evolves before the
+                algorithm is implemented automatically using
+                Scikit-learn.
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

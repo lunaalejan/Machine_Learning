@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, Response, render_template, request
 from matplotlib import pyplot as plt
 import pandas as pd
@@ -472,7 +474,185 @@ def unsupervised_concepts():
 
 @app.route('/unsupervised/manual-exercise')
 def manual_exercise():
-    return render_template('manual_exercise.html' )
+
+    # --------------------------------------------------
+    # FILE PATHS
+    # --------------------------------------------------
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(base_dir, "data")
+
+    # --------------------------------------------------
+    # LOAD THE 100-RECORD DATASET
+    # --------------------------------------------------
+
+    records_df = pd.read_csv(
+        os.path.join(data_dir, "manual_kmeans_100.csv")
+    )
+
+    records = records_df.to_dict(
+        orient="records"
+    )
+
+    # --------------------------------------------------
+    # LOAD THE THREE ITERATIONS
+    # --------------------------------------------------
+
+    iteration1_df = pd.read_csv(
+        os.path.join(data_dir, "iteration1.csv")
+    )
+
+    iteration2_df = pd.read_csv(
+        os.path.join(data_dir, "iteration2.csv")
+    )
+
+    iteration3_df = pd.read_csv(
+        os.path.join(data_dir, "iteration3.csv")
+    )
+
+    iteration1 = iteration1_df.to_dict(
+        orient="records"
+    )
+
+    iteration2 = iteration2_df.to_dict(
+        orient="records"
+    )
+
+    iteration3 = iteration3_df.to_dict(
+        orient="records"
+    )
+
+    # --------------------------------------------------
+    # LOAD CENTROIDS
+    # --------------------------------------------------
+
+    centroids_df = pd.read_csv(
+        os.path.join(data_dir, "manual_centroids.csv")
+    )
+
+    def get_centroids(stage):
+
+        selected = centroids_df[
+            centroids_df["Stage"] == stage
+        ]
+
+        return selected[
+            ["TotalQuantity", "TotalSpending"]
+        ].values.tolist()
+
+    initial_centroids = get_centroids("Initial")
+    centroids1 = get_centroids("Iteration 1")
+    centroids2 = get_centroids("Iteration 2")
+    centroids3 = get_centroids("Iteration 3")
+
+    # --------------------------------------------------
+    # LOAD VARIATION RESULTS
+    # --------------------------------------------------
+
+    variance_df = pd.read_csv(
+        os.path.join(data_dir, "manual_variance.csv")
+    )
+
+    variance_data = variance_df.to_dict(
+        orient="records"
+    )
+
+    # --------------------------------------------------
+    # INTERPRETATION OF WITHIN-CLUSTER VARIATION
+    # --------------------------------------------------
+
+    variance_interpretation = (
+        "The total within-cluster sum of squares (WCSS) decreased "
+        "from 30,840,040.46 in Iteration 1 to 27,682,280.33 in "
+        "Iteration 2 and 25,172,487.73 in Iteration 3. This "
+        "progressive reduction indicates that the observations "
+        "became more compact around their assigned centroids during "
+        "the three manual iterations."
+    )
+
+    # --------------------------------------------------
+    # FINAL CLUSTER INTERPRETATION
+    # --------------------------------------------------
+
+    cluster1_interpretation = (
+        "Cluster 1 has a final centroid of approximately "
+        "(164.61, 337.29). Compared with the other two clusters, "
+        "these customers show lower total quantities purchased and "
+        "lower total spending within this 100-customer sample."
+    )
+
+    cluster2_interpretation = (
+        "Cluster 2 has a final centroid of approximately "
+        "(636.15, 1051.43). These customers show intermediate "
+        "purchasing behavior, with higher quantity and spending "
+        "than Cluster 1 but lower values than Cluster 3."
+    )
+
+    cluster3_interpretation = (
+        "Cluster 3 has a final centroid of approximately "
+        "(1495.60, 2934.75). Compared with the other clusters, "
+        "these customers show the highest total quantities "
+        "purchased and the highest total spending within the "
+        "manual sample."
+    )
+
+    # --------------------------------------------------
+    # FINAL CONCLUSION
+    # --------------------------------------------------
+
+    manual_conclusion = (
+        "The three-iteration manual K-Means simulation demonstrates "
+        "how customer observations are progressively reorganized "
+        "according to their Euclidean distance from the centroids. "
+        "After each assignment step, new centroids were calculated "
+        "using the mean values of the observations in each cluster. "
+        "The reduction in total WCSS across the three iterations "
+        "shows an improvement in cluster compactness. The final "
+        "centroids also reveal three distinct levels of purchasing "
+        "behavior in terms of total quantity and total spending "
+        "within the selected sample."
+    )
+
+    # PLOT PATHS
+    
+    initial_plot = "kmeans_manual/initial_plot.png"
+    iteration1_plot = "kmeans_manual/iteration1.png"
+    iteration2_plot = "kmeans_manual/iteration2.png"
+    iteration3_plot = "kmeans_manual/iteration3.png"
+
+    # --------------------------------------------------
+    # SEND EVERYTHING TO THE HTML TEMPLATE
+    # --------------------------------------------------
+
+    return render_template(
+        "manual_exercise.html",
+
+        records=records,
+
+        initial_centroids=initial_centroids,
+        initial_plot=initial_plot,
+
+        iteration1=iteration1,
+        centroids1=centroids1,
+        iteration1_plot=iteration1_plot,
+
+        iteration2=iteration2,
+        centroids2=centroids2,
+        iteration2_plot=iteration2_plot,
+
+        iteration3=iteration3,
+        centroids3=centroids3,
+        iteration3_plot=iteration3_plot,
+
+        variance_data=variance_data,
+        variance_interpretation=variance_interpretation,
+
+        cluster1_interpretation=cluster1_interpretation,
+        cluster2_interpretation=cluster2_interpretation,
+        cluster3_interpretation=cluster3_interpretation,
+
+        manual_conclusion=manual_conclusion
+    )
 
 @app.route('/unsupervised/clustering-application')
 def clustering_application():
