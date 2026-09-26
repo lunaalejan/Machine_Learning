@@ -1,0 +1,1031 @@
+{% extends "base.html" %}
+
+{% block title %}
+Unsupervised Learning | Data with Roots
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .unsupervised-page {
+        padding: 4rem 0;
+    }
+
+    .hero-section {
+        padding: 3rem;
+        background: linear-gradient(
+            135deg,
+            var(--card),
+            var(--bg-2)
+        );
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        margin-bottom: 3rem;
+    }
+
+    .hero-section h1 {
+        font-size: 2.7rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-section p {
+        color: var(--muted);
+        font-size: 1.1rem;
+        max-width: 850px;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+        color: var(--ink);
+    }
+
+    .concept-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.8rem;
+        height: 100%;
+        transition: transform .2s ease,
+                    border-color .2s ease;
+    }
+
+    .concept-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--teal);
+    }
+
+    .concept-card h3 {
+        color: var(--ochre);
+        font-size: 1.35rem;
+        margin-bottom: 1rem;
+    }
+
+    .concept-card p,
+    .concept-card li {
+        color: var(--muted);
+        line-height: 1.7;
+    }
+
+    .highlight-box {
+        background: var(--bg-2);
+        border-left: 4px solid var(--teal);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+
+    .highlight-box p {
+        margin: 0;
+        color: var(--ink);
+        line-height: 1.7;
+    }
+
+    .formula-box {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .formula {
+        font-family: Georgia, serif;
+        font-size: 1.6rem;
+        color: var(--ochre);
+        margin-bottom: 1rem;
+    }
+
+    .formula-description {
+        color: var(--muted);
+        margin-bottom: 0;
+    }
+
+    .step-card {
+        position: relative;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem;
+        padding-top: 3.5rem;
+        height: 100%;
+    }
+
+    .step-number {
+        position: absolute;
+        top: 1rem;
+        left: 1.5rem;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: var(--teal);
+        color: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .step-card h3 {
+        color: var(--ink);
+        font-size: 1.15rem;
+        margin-bottom: .7rem;
+    }
+
+    .step-card p {
+        color: var(--muted);
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .example-box {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 2rem;
+    }
+
+    .example-box h3 {
+        color: var(--ochre);
+    }
+
+    .example-box p {
+        color: var(--muted);
+        line-height: 1.7;
+    }
+
+    .comparison-table {
+        background: var(--card);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+
+    .comparison-table table {
+        margin-bottom: 0;
+        color: var(--ink);
+    }
+
+    .comparison-table th {
+        background: var(--bg-2);
+        color: var(--ochre);
+        border-color: var(--line);
+    }
+
+    .comparison-table td {
+        color: var(--ink);
+        border-color: var(--line);
+        background: var(--card);
+    }
+
+    .flow-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: .8rem;
+        margin: 2rem 0;
+    }
+
+    .flow-item {
+        background: var(--card);
+        border: 1px solid var(--line);
+        padding: 1rem 1.3rem;
+        border-radius: 10px;
+        color: var(--ink);
+        text-align: center;
+    }
+
+    .flow-arrow {
+        color: var(--ochre);
+        font-size: 1.5rem;
+    }
+
+    .final-box {
+        background: linear-gradient(
+            135deg,
+            rgba(79, 163, 147, .15),
+            rgba(217, 155, 60, .08)
+        );
+        border: 1px solid var(--teal);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-top: 3rem;
+    }
+
+    .final-box h2 {
+        color: var(--teal);
+    }
+
+    .final-box p {
+        color: var(--ink);
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container unsupervised-page">
+
+
+    <!-- HERO -->
+
+    <section class="hero-section">
+
+        <p class="text-uppercase mb-2"
+           style="color: var(--teal); font-weight: 600;">
+            Machine Learning Module
+        </p>
+
+        <h1>
+            Unsupervised Machine Learning
+        </h1>
+
+        <p>
+            Unsupervised machine learning is a type of machine
+            learning in which algorithms analyze data without
+            predefined labels or target values. Its purpose is
+            to discover hidden patterns, structures, relationships,
+            or groups that naturally exist within a dataset.
+        </p>
+
+    </section>
+
+
+    <!-- WHAT IS UNSUPERVISED LEARNING -->
+
+    <h2 class="section-title">
+        What is Unsupervised Learning?
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <div class="concept-card">
+
+                <h3>
+                    Unlabeled Data
+                </h3>
+
+                <p>
+                    Unlike supervised learning, unsupervised learning
+                    works with data that does not contain a known
+                    target or predefined class. The algorithm explores
+                    the available variables and attempts to identify
+                    meaningful structures by itself.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <div class="concept-card">
+
+                <h3>
+                    Pattern Discovery
+                </h3>
+
+                <p>
+                    The main objective is to discover similarities,
+                    differences, associations, and patterns among
+                    observations. These patterns can help understand
+                    complex datasets and support decision-making.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUPERVISED VS UNSUPERVISED -->
+
+    <h2 class="section-title">
+        Supervised vs. Unsupervised Learning
+    </h2>
+
+    <div class="comparison-table table-responsive">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+                    <th>Characteristic</th>
+                    <th>Supervised Learning</th>
+                    <th>Unsupervised Learning</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Data</td>
+                    <td>Labeled data</td>
+                    <td>Unlabeled data</td>
+                </tr>
+
+                <tr>
+                    <td>Target variable</td>
+                    <td>Available</td>
+                    <td>Not available</td>
+                </tr>
+
+                <tr>
+                    <td>Main objective</td>
+                    <td>Predict an outcome</td>
+                    <td>Discover hidden patterns</td>
+                </tr>
+
+                <tr>
+                    <td>Common tasks</td>
+                    <td>
+                        Classification and regression
+                    </td>
+                    <td>
+                        Clustering and dimensionality reduction
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Example</td>
+                    <td>
+                        Predict whether a customer will purchase
+                        a product
+                    </td>
+                    <td>
+                        Group customers according to similar
+                        purchasing behavior
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- CLUSTERING -->
+
+    <h2 class="section-title">
+        What is Clustering?
+    </h2>
+
+    <div class="highlight-box">
+
+        <p>
+            <strong>Clustering</strong> is an unsupervised learning
+            technique used to divide observations into groups called
+            clusters. Records within the same cluster should be more
+            similar to each other than to records belonging to other
+            clusters.
+        </p>
+
+    </div>
+
+    <p style="color: var(--muted); line-height: 1.8;">
+
+        Clustering is commonly used in customer segmentation,
+        behavioral analysis, pattern recognition, image analysis,
+        market research, anomaly exploration, and many other
+        applications where natural groups need to be identified
+        without predefined labels.
+
+    </p>
+
+
+    <!-- K-MEANS -->
+
+    <h2 class="section-title">
+        What is K-Means?
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-lg-7">
+
+            <div class="concept-card">
+
+                <h3>
+                    K-Means Clustering
+                </h3>
+
+                <p>
+                    K-Means is a clustering algorithm that divides a
+                    dataset into a predefined number of groups,
+                    represented by the value <strong>K</strong>.
+                </p>
+
+                <p>
+                    The algorithm assigns each observation to the
+                    nearest cluster center and repeatedly recalculates
+                    those centers until the cluster assignments or
+                    centroid positions stabilize.
+                </p>
+
+                <p>
+                    For this project, the value of K is set to
+                    <strong>3</strong>, meaning that the observations
+                    will be organized into three clusters.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-5">
+
+            <div class="concept-card">
+
+                <h3>
+                    Main Elements
+                </h3>
+
+                <ul>
+                    <li>Dataset observations</li>
+                    <li>Numerical variables</li>
+                    <li>Number of clusters (K)</li>
+                    <li>Initial centroids</li>
+                    <li>Euclidean distance</li>
+                    <li>Cluster assignments</li>
+                    <li>Updated centroids</li>
+                    <li>Iterations</li>
+                    <li>Convergence</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CENTROIDS -->
+
+    <h2 class="section-title">
+        What is a Centroid?
+    </h2>
+
+    <div class="concept-card">
+
+        <h3>
+            Cluster Center
+        </h3>
+
+        <p>
+            A centroid represents the center of a cluster. In
+            K-Means, each cluster has one centroid whose coordinates
+            are calculated using the mean values of all observations
+            assigned to that cluster.
+        </p>
+
+        <p>
+            For a dataset containing two numerical variables, the
+            centroid can be represented as:
+        </p>
+
+        <div class="formula-box">
+
+            <div class="formula">
+                C = (x̄, ȳ)
+            </div>
+
+            <p class="formula-description">
+                where x̄ is the mean of the first variable and
+                ȳ is the mean of the second variable.
+            </p>
+
+        </div>
+
+        <p>
+            After each iteration, the centroid changes according to
+            the observations currently assigned to its cluster.
+        </p>
+
+    </div>
+
+
+    <!-- EUCLIDEAN DISTANCE -->
+
+    <h2 class="section-title">
+        Euclidean Distance
+    </h2>
+
+    <p style="color: var(--muted); line-height: 1.8;">
+
+        K-Means needs a method for determining which centroid is
+        closest to each observation. One of the most common measures
+        used for numerical data is Euclidean distance.
+
+    </p>
+
+
+    <div class="formula-box">
+
+        <div class="formula">
+            d = √[(x − x<sub>c</sub>)² +
+            (y − y<sub>c</sub>)²]
+        </div>
+
+        <p class="formula-description">
+            The observation is assigned to the cluster whose
+            centroid produces the smallest distance.
+        </p>
+
+    </div>
+
+
+    <!-- EXAMPLE -->
+
+    <div class="example-box">
+
+        <h3>
+            Distance Example
+        </h3>
+
+        <p>
+            Suppose a record has the coordinates
+            <strong>(30, 40)</strong> and one centroid is located at
+            <strong>(25, 25)</strong>.
+        </p>
+
+        <div class="formula-box">
+
+            <div class="formula">
+                d = √[(30 − 25)² + (40 − 25)²]
+            </div>
+
+            <div class="formula">
+                d = √(25 + 225)
+            </div>
+
+            <div class="formula">
+                d = √250 ≈ 15.81
+            </div>
+
+        </div>
+
+        <p>
+            This calculation is repeated for all centroids. The record
+            is then assigned to the cluster associated with the
+            shortest distance.
+        </p>
+
+    </div>
+
+
+    <!-- HOW K-MEANS WORKS -->
+
+    <h2 class="section-title">
+        How Does K-Means Work?
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="step-card">
+
+                <div class="step-number">1</div>
+
+                <h3>
+                    Select K
+                </h3>
+
+                <p>
+                    Define the number of clusters that the algorithm
+                    will create.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="step-card">
+
+                <div class="step-number">2</div>
+
+                <h3>
+                    Initialize Centroids
+                </h3>
+
+                <p>
+                    Select or generate an initial center for each
+                    cluster.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="step-card">
+
+                <div class="step-number">3</div>
+
+                <h3>
+                    Calculate Distances
+                </h3>
+
+                <p>
+                    Calculate the distance between every observation
+                    and every centroid.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="step-card">
+
+                <div class="step-number">4</div>
+
+                <h3>
+                    Assign Clusters
+                </h3>
+
+                <p>
+                    Assign each observation to the cluster with the
+                    nearest centroid.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="step-card">
+
+                <div class="step-number">5</div>
+
+                <h3>
+                    Update Centroids
+                </h3>
+
+                <p>
+                    Calculate the mean coordinates of the observations
+                    belonging to each cluster.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="step-card">
+
+                <div class="step-number">6</div>
+
+                <h3>
+                    Repeat
+                </h3>
+
+                <p>
+                    Repeat the assignment and centroid update process
+                    until convergence or a stopping condition is
+                    reached.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FLOW -->
+
+    <h2 class="section-title">
+        K-Means Process
+    </h2>
+
+    <div class="flow-container">
+
+        <div class="flow-item">
+            Dataset
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Select K
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Initial Centroids
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Calculate Distances
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Assign Clusters
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Update Centroids
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Repeat
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-item">
+            Final Clusters
+        </div>
+
+    </div>
+
+
+    <!-- ITERATIONS -->
+
+    <h2 class="section-title">
+        What is an Iteration?
+    </h2>
+
+    <div class="concept-card">
+
+        <h3>
+            Repeating the K-Means Process
+        </h3>
+
+        <p>
+            An iteration is one complete cycle in which observations
+            are assigned to their nearest centroid and new centroid
+            coordinates are calculated.
+        </p>
+
+        <p>
+            During the first iteration, assignments are based on the
+            initial centroids. The updated centroids are then used in
+            the second iteration. This process continues until the
+            stopping condition is reached.
+        </p>
+
+        <p>
+            In the manual exercise developed for this project,
+            <strong>three iterations</strong> are performed to
+            demonstrate how cluster assignments and centroid
+            positions evolve.
+        </p>
+
+    </div>
+
+
+    <!-- CONVERGENCE -->
+
+    <h2 class="section-title">
+        Convergence
+    </h2>
+
+    <div class="highlight-box">
+
+        <p>
+            K-Means is considered to have converged when the cluster
+            assignments or centroid positions no longer change
+            significantly between iterations, or when another
+            predefined stopping criterion is reached.
+        </p>
+
+    </div>
+
+
+    <!-- WITHIN CLUSTER VARIANCE -->
+
+    <h2 class="section-title">
+        Within-Cluster Variation
+    </h2>
+
+    <div class="concept-card">
+
+        <h3>
+            Measuring Cluster Compactness
+        </h3>
+
+        <p>
+            One objective of K-Means is to create compact clusters.
+            This means that observations belonging to the same
+            cluster should remain relatively close to their centroid.
+        </p>
+
+        <p>
+            A common K-Means objective is to minimize the sum of
+            squared distances between observations and their assigned
+            centroids. Lower within-cluster dispersion generally
+            indicates more compact groups for the selected value of K.
+        </p>
+
+        <p>
+            In the manual exercise, the within-cluster variation is
+            compared across the three iterations to observe how the
+            cluster configuration changes.
+        </p>
+
+    </div>
+
+
+    <!-- ADVANTAGES / LIMITATIONS -->
+
+    <h2 class="section-title">
+        Advantages and Limitations
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <div class="concept-card">
+
+                <h3>
+                    Advantages
+                </h3>
+
+                <ul>
+                    <li>
+                        Simple to understand and implement.
+                    </li>
+
+                    <li>
+                        Efficient for many numerical datasets.
+                    </li>
+
+                    <li>
+                        Produces clearly defined cluster assignments.
+                    </li>
+
+                    <li>
+                        Centroids provide useful summaries of groups.
+                    </li>
+
+                    <li>
+                        Useful for exploratory data analysis and
+                        segmentation.
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <div class="concept-card">
+
+                <h3>
+                    Limitations
+                </h3>
+
+                <ul>
+                    <li>
+                        The value of K must be selected.
+                    </li>
+
+                    <li>
+                        Results can depend on centroid initialization.
+                    </li>
+
+                    <li>
+                        It can be sensitive to outliers.
+                    </li>
+
+                    <li>
+                        Variables with different scales may influence
+                        distance calculations.
+                    </li>
+
+                    <li>
+                        It may perform poorly when clusters have
+                        complex shapes, very different densities,
+                        or substantially different sizes.
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- IMPORTANCE OF SCALING -->
+
+    <h2 class="section-title">
+        Why is Feature Scaling Important?
+    </h2>
+
+    <div class="highlight-box">
+
+        <p>
+            Because K-Means relies on distances, numerical variables
+            with much larger scales can have a stronger influence on
+            the clustering process. Standardization or another
+            appropriate scaling method can therefore be important
+            when variables use different units or ranges.
+        </p>
+
+    </div>
+
+
+    <!-- APPLICATION -->
+
+    <h2 class="section-title">
+        K-Means in This Project
+    </h2>
+
+    <div class="concept-card">
+
+        <h3>
+            Customer Segmentation
+        </h3>
+
+        <p>
+            In this project, K-Means is used to explore groups of
+            customers with similar purchasing behavior.
+        </p>
+
+        <p>
+            Numerical purchasing variables can be used to represent
+            customer behavior. K-Means analyzes similarities among
+            these observations and assigns customers to clusters
+            according to their proximity to the corresponding
+            centroids.
+        </p>
+
+        <p>
+            The next section presents a manual simulation using
+            100 records and three iterations. The clustering
+            application then implements K-Means with Scikit-learn
+            using a larger dataset.
+        </p>
+
+    </div>
+
+
+    <!-- FINAL SUMMARY -->
+
+    <div class="final-box">
+
+        <h2>
+            Key Idea
+        </h2>
+
+        <p>
+            K-Means transforms a collection of unlabeled numerical
+            observations into groups based on similarity. It begins
+            with K centroids, assigns observations according to
+            distance, recalculates the cluster centers, and repeats
+            the process. Understanding these steps is essential for
+            interpreting the manual simulation and the automated
+            clustering application developed in this project.
+        </p>
+
+    </div>
+
+
+</div>
+
+{% endblock %}
