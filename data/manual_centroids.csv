@@ -1,0 +1,13 @@
+Stage,Centroid,TotalQuantity,TotalSpending
+Initial,C1,103.0,178.05
+Initial,C2,232.0,585.12
+Initial,C3,2281.0,2248.63
+Iteration 1,C1,119.9,225.71
+Iteration 1,C2,438.06,809.78
+Iteration 1,C3,1466.67,2704.23
+Iteration 2,C1,139.29,287.5
+Iteration 2,C2,541.29,908.45
+Iteration 2,C3,1436.18,2802.99
+Iteration 3,C1,164.61,337.29
+Iteration 3,C2,636.15,1051.43
+Iteration 3,C3,1495.6,2934.75
