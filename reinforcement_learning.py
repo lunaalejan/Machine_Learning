@@ -56,6 +56,7 @@ def take_action(state, action):
 
     elif action == 3:
         new_col += 1
+
     if (
         new_row < 0
         or new_row >= ROWS
@@ -77,6 +78,121 @@ def take_action(state, action):
         return next_state, REWARD_TARGET, True, "Target"
 
     return next_state, REWARD_NORMAL, False, "Path"
+
+def state_action_features(state, action):
+    row, col = state
+
+    return np.array([
+        row / (ROWS - 1),
+        col / (COLS - 1),
+        action / 3
+    ]).reshape(1, -1)
+
+models = []
+
+def initialize_models():
+    global models
+
+    models = []
+
+    for action in range(4):
+        model = SGDRegressor(
+            learning_rate="constant",
+            eta0=0.01,
+            random_state=42
+        )
+
+        X = state_action_features(START, action)
+        y = np.array([0.0])
+
+        model.partial_fit(X, y)
+
+        models.append(model)
+  
+def get_q_values(state):
+    q_values = []
+
+    for action in range(4):
+        X = state_action_features(state, action)
+        q = models[action].predict(X)[0]
+        q_values.append(q)
+
+    return np.array(q_values)
+
+def choose_action(state, epsilon):
+    if random.random() < epsilon:
+        return random.randint(0, 3)
+
+    q_values = get_q_values(state)
+
+    return int(np.argmax(q_values))
+
+EPISODES = 1000
+MAX_STEPS = 200
+
+GAMMA = 0.95
+
+INITIAL_EPSILON = 1.0
+MIN_EPSILON = 0.05
+EPSILON_DECAY = 0.995
+
+def train_agent():
+
+    initialize_models()
+
+    epsilon = INITIAL_EPSILON
+    successful_episodes = 0
+    rewards_history = []
+
+    for episode in range(EPISODES):
+
+        state = START
+        total_reward = 0
+
+        for step in range(MAX_STEPS):
+
+            action = choose_action(state, epsilon)
+
+            next_state, reward, done, cell_type = take_action(state, action)
+
+            if done:
+                target_q = reward
+            else:
+                next_q_values = get_q_values(next_state)
+
+                target_q = reward + GAMMA * np.max(next_q_values)
+
+        models[action].partial_fit(
+            state_action_features(state, action),
+            np.array([target_q])
+                    )
+        total_reward += reward
+
+        state = next_state
+
+        if done:
+            successful_episodes += 1
+            break
+
+    rewards_history.append(total_reward)
+
+
+    epsilon = max(
+                MIN_EPSILON,
+                epsilon * EPSILON_DECAY
+            )
+
+    return {
+
+            "episodes": EPISODES,
+
+            "successful": successful_episodes,
+
+            "average_reward": np.mean(rewards_history),
+
+            "final_epsilon": epsilon
+
+        }
 
 def validate_grid():
     counts = {
@@ -103,3 +219,6 @@ def validate_grid():
 
 if __name__ == "__main__":
     validate_grid()
+    initialize_models()
+    print("\nQ values iniciales:")
+    print(get_q_values((0,0)))
