@@ -30,9 +30,9 @@ GRID = [
     list("oo#oooo#Do"),
     list("Dooo#oooo#"),
     list("o#Doooo#oo"),
-    list("oooo#Doooo"),
-    list("#Doo#ooDoo"),
-    list("oo#Doo#ooT"),
+    list("oo###Doooo"),
+    list("#Doo#DooDo"),
+    list("oo#ooo#ooT"),
 ]
 
 def get_cell_type(position):
@@ -79,16 +79,24 @@ def take_action(state, action):
 
     return next_state, REWARD_NORMAL, False, "Path"
 
-def state_action_features(state, action):
-    row, col = state
+def get_valid_actions(state):
+    valid_actions = []
 
-    return np.array([
-        row / (ROWS - 1),
-        col / (COLS - 1),
-        action / 3
-    ]).reshape(1, -1)
+    for action in range(4):
+        next_state, reward, done, cell = take_action(state,action)
+        if cell not in ["Invalid","Wall"]:
+
+            valid_actions.append(action)
+
+    return valid_actions
 
 models = []
+
+def state_features(state):
+    row, col = state
+    x = np.zeros((1, ROWS * COLS))
+    x[0, row * COLS + col] = 1.0
+    return x
 
 def initialize_models():
     global models
@@ -98,36 +106,36 @@ def initialize_models():
     for action in range(4):
         model = SGDRegressor(
             learning_rate="constant",
-            eta0=0.01,
+            eta0=0.1,
+            alpha=0.0,
+            fit_intercept=False,
             random_state=42
         )
 
-        X = state_action_features(START, action)
-        y = np.array([0.0])
-
-        model.partial_fit(X, y)
+        X_init = np.zeros((1, ROWS * COLS))
+        model.partial_fit(X_init, np.array([0.0]))
 
         models.append(model)
   
 def get_q_values(state):
-    q_values = []
-
-    for action in range(4):
-        X = state_action_features(state, action)
-        q = models[action].predict(X)[0]
-        q_values.append(q)
-
-    return np.array(q_values)
+    X = state_features(state)
+    return np.array([models[a].predict(X)[0] for a in range(4)])
 
 def choose_action(state, epsilon):
+    valid_actions = get_valid_actions(state)
+    
     if random.random() < epsilon:
-        return random.randint(0, 3)
+        return random.choice(valid_actions)
 
     q_values = get_q_values(state)
+    valid_q = {}
 
-    return int(np.argmax(q_values))
+    for action in valid_actions:
+        valid_q[action] = q_values[action]
 
-EPISODES = 1000
+    return max(valid_q,key=valid_q.get)
+
+EPISODES = 5000
 MAX_STEPS = 200
 
 GAMMA = 0.95
@@ -141,7 +149,7 @@ def train_agent():
     initialize_models()
 
     epsilon = INITIAL_EPSILON
-    successful_episodes = 0
+    successful = 0
     rewards_history = []
 
     for episode in range(EPISODES):
@@ -162,38 +170,82 @@ def train_agent():
 
                 target_q = reward + GAMMA * np.max(next_q_values)
 
-        models[action].partial_fit(
-            state_action_features(state, action),
-            np.array([target_q])
-                    )
-        total_reward += reward
+            models[action].partial_fit(
 
-        state = next_state
+                state_features(state),
+                np.array([target_q])
+                )
+            total_reward += reward
 
-        if done:
-            successful_episodes += 1
-            break
+            state = next_state
 
-    rewards_history.append(total_reward)
+            if done:
+                successful += 1
+                break
+
+        rewards_history.append(total_reward)
 
 
-    epsilon = max(
+        epsilon = max(
                 MIN_EPSILON,
                 epsilon * EPSILON_DECAY
             )
+    average_reward = np.mean(rewards_history)
+
+    print("\nTraining completed")
+    print("--------------------")
+    print("\nSuccessful episodes",successful)
+    print("\nAverage reward",average_reward)
+    print("\nFinal epsilon",epsilon)
 
     return {
+             "episodes": EPISODES,
+             "successful": successful,
+             "average_reward": average_reward,
+             "final_epsilon": epsilon
+    }
 
-            "episodes": EPISODES,
+def evaluate_agent():
+    state = START
+    path = [state]
 
-            "successful": successful_episodes,
+    steps = []
 
-            "average_reward": np.mean(rewards_history),
+    total_reward = 0
 
-            "final_epsilon": epsilon
+    for step in range(MAX_STEPS):
 
-        }
+        action = choose_action(state,0)
 
+        next_state, reward, done, cell_type = take_action(state,action)
+
+        steps.append({
+            "step": step + 1,
+            "state": state,
+            "action": ACTIONS[action],
+            "next_state": next_state,
+            "cell_type": cell_type,
+            "reward": reward
+
+        })
+
+        path.append(next_state)
+
+        total_reward += reward
+        state = next_state
+
+        if done:
+            break
+
+    return {
+        "goal_reached": state == TARGET,
+        "movements": len(steps),
+        "total_reward": total_reward,
+        "path": path,
+        "steps": steps
+    }
+
+    
 def validate_grid():
     counts = {
         "A": 0,
@@ -219,6 +271,12 @@ def validate_grid():
 
 if __name__ == "__main__":
     validate_grid()
-    initialize_models()
-    print("\nQ values iniciales:")
-    print(get_q_values((0,0)))
+    print("\nTraining agent")
+    results=train_agent()
+    print("\nTrain results")
+    print(results)
+    print("\nQ values after training")
+    print(get_q_values(START))
+    print("\nEvaluation")
+    evaluation = evaluate_agent()
+    print(evaluation)
