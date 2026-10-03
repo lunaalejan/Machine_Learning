@@ -1,0 +1,22 @@
+Q VALUES AFTER TRAINING
+
+Initial state:
+(0,0)
+
+
+Actions:
+
+Up:
+0.0
+
+Down:
+30.17444023
+
+Left:
+0.0
+
+Right:
+25.28214591
+
+Best action:
+Down

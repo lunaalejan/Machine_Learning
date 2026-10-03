@@ -1,0 +1,34 @@
+REINFORCEMENT LEARNING CONCEPTS
+
+Agent:
+The agent is the entity that makes decisions and learns from interaction with the environment.
+
+Environment:
+The environment is the space where the agent operates. In this project, it is a 10x10 GridWorld.
+
+State:
+The state represents the current position of the agent inside the environment.
+
+Actions:
+The possible actions are:
+- Up
+- Down
+- Left
+- Right
+
+Reward:
+The reward provides feedback after each action:
+- Valid movement: -1
+- Invalid movement: -5
+- Wall: -8
+- Danger: -15
+- Goal: +100
+
+Policy:
+The policy is the strategy learned by the agent to select the best action in each state.
+
+Exploration:
+The agent tries new actions to discover better solutions.
+
+Exploitation:
+The agent uses previous knowledge to select the best learned action.
