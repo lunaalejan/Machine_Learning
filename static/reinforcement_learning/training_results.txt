@@ -1,0 +1,19 @@
+REINFORCEMENT LEARNING TRAINING RESULTS
+
+Environment:
+Grid size: 10x10
+
+Training parameters:
+Episodes: 5000
+Max steps: 200
+Gamma: 0.95
+
+Results:
+
+Successful episodes: 4914
+
+Average reward:
+69.1684
+
+Final epsilon:
+0.05
