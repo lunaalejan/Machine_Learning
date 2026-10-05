@@ -38,6 +38,19 @@ from LogisticRegression import (
 )
 from NaiveBayes import get_metrics, predict_customer
 
+def read_file(file_path):
+
+    try:
+        with open(
+            file_path,
+            "r",
+            encoding="utf-8"
+        ) as file:
+            return file.read()
+
+    except FileNotFoundError:
+        return "File not found."
+
 
 app = Flask(__name__)
 
@@ -750,6 +763,38 @@ def clustering_application():
 
         plot="clustering/clustering_application.png"
 
+    )
+
+@app.route("/reinforcement-learning")
+def reinforcement_learning():
+
+    base_path = os.path.join(
+        app.static_folder,
+        "reinforcement_learning"
+    )
+
+    training_results = read_file(
+        os.path.join(base_path, "training_results.txt")
+    )
+
+    q_values = read_file(
+        os.path.join(base_path, "q_values.txt")
+    )
+
+    agent_path = read_file(
+        os.path.join(base_path, "agent_path.txt")
+    )
+
+    concepts = read_file(
+        os.path.join(base_path, "concepts.txt")
+    )
+
+    return render_template(
+        "reinforcement_learning.html",
+        training_results=training_results,
+        q_values=q_values,
+        agent_path=agent_path,
+        concepts=concepts
     )
 
 # ---------------------------------------------------
