@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reinforcement Learning</title>
+
+    <style>
+
+        :root {
+            --bg: #14181C;
+            --bg-2: #1D2227;
+            --card: #20262C;
+            --ink: #EDEAE0;
+            --muted: #A5ACB3;
+            --ochre: #D99B3C;
+            --teal: #4FA393;
+            --line: #333B42;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--bg-2);
+            border-bottom: 2px solid var(--line);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: var(--ink);
+            text-decoration: none;
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: var(--muted);
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .nav-link:hover {
+            color: var(--teal);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: Georgia, serif;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: var(--muted);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            font-family: Georgia, serif;
+            margin-bottom: 15px;
+            color: var(--ink);
+        }
+
+        .card p {
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .info-box {
+            background: var(--bg-2);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 8px;
+            color: var(--teal);
+        }
+
+        .info-box p {
+            color: var(--muted);
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .result {
+            background: var(--bg-2);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .result strong {
+            display: block;
+            font-size: 1.8rem;
+            color: var(--ochre);
+            margin-bottom: 5px;
+        }
+
+        .result span {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .gridworld {
+            display: grid;
+            grid-template-columns: repeat(10, 45px);
+            gap: 4px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .cell {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: #2A3036;
+            border: 1px solid var(--line);
+            font-weight: bold;
+        }
+
+        .agent {
+            background: var(--teal);
+            color: white;
+        }
+
+        .target {
+            background: var(--ochre);
+            color: white;
+        }
+
+        .wall {
+            background: #101316;
+        }
+
+        .danger {
+            background: #713D3D;
+            color: white;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+        }
+
+        .path {
+            background: var(--bg-2);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 20px;
+            color: var(--muted);
+            font-family: monospace;
+            overflow-x: auto;
+        }
+
+        .path pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--muted);
+            font-family: monospace;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--muted);
+            padding: 30px;
+            border-top: 1px solid var(--line);
+            margin-top: 50px;
+        }
+
+        @media (max-width: 900px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gridworld {
+                transform: scale(0.8);
+                transform-origin: center;
+                margin-left: -10%;
+                margin-right: -10%;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .results {
+                grid-template-columns: 1fr;
+            }
+
+            .gridworld {
+                transform: scale(0.55);
+                margin-left: -25%;
+                margin-right: -25%;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/" class="navbar-brand">
+            Machine Learning
+        </a>
+
+        <div>
+
+            <a href="/" class="nav-link">Home</a>
+
+        </div>
+
+    </nav>
+
+    <main class="container">
+
+        <section class="header">
+
+            <h1>Reinforcement Learning</h1>
+
+            <p>
+                Reinforcement learning through an agent that learns
+                to navigate through a GridWorld environment using
+                rewards and Q-values.
+            </p>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>What is Reinforcement Learning?</h2>
+
+            <p>
+                Reinforcement learning is a type of machine learning
+                in which an agent interacts with an environment,
+                performs actions, and receives rewards. The objective
+                of the agent is to learn a strategy that allows it
+                to obtain the highest possible accumulated reward.
+            </p>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Main Elements</h2>
+
+            <div class="grid">
+
+                <div class="info-box">
+
+                    <h3>Agent</h3>
+
+                    <p>
+                        An entity that makes decisions and learns
+                        through interaction with the environment.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <h3>Environment</h3>
+
+                    <p>
+                        GridWorld in which the agent must navigate
+                        until it reaches the target.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <h3>Actions</h3>
+
+                    <p>
+                        Up, down, left, and right.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <h3>Rewards</h3>
+
+                    <p>
+                        The agent receives rewards or penalties
+                        depending on its actions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Reinforcement Learning Concepts</h2>
+
+            <div class="path">
+
+                <pre>{{ concepts }}</pre>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>GridWorld</h2>
+
+            <div class="gridworld">
+
+                <div class="cell agent">A</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+
+
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+
+
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+
+
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+
+
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+
+
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+
+
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+
+
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell wall"></div>
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+
+
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell danger">D</div>
+                <div class="cell"></div>
+
+
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell wall"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell target">T</div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <div class="legend-item">
+
+                    <span class="legend-color agent"></span>
+
+                    Agent
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color target"></span>
+
+                    Target
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color wall"></span>
+
+                    Wall
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color danger"></span>
+
+                    Danger
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Training Results</h2>
+
+            <div class="path">
+
+                <pre>{{ training_results }}</pre>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Initial Q-values</h2>
+
+            <div class="path">
+
+                <pre>{{ q_values }}</pre>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Found Path</h2>
+
+            <div class="path">
+
+                <pre>{{ agent_path }}</pre>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Evaluation Result</h2>
+
+            <div class="results">
+
+                <div class="result">
+
+                    <strong>18</strong>
+
+                    <span>Movements</span>
+
+                </div>
+
+
+                <div class="result">
+
+                    <strong>83</strong>
+
+                    <span>Total Reward</span>
+
+                </div>
+
+
+                <div class="result">
+
+                    <strong>Yes</strong>
+
+                    <span>Target Reached</span>
+
+                </div>
+
+
+                <div class="result">
+
+                    <strong>0.05</strong>
+
+                    <span>Final Epsilon</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        Reinforcement Learning - Machine Learning Project
+
+    </footer>
+
+</body>
+
+</html>
